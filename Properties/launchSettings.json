@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MathToolkit": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
