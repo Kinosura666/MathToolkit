@@ -56,37 +56,72 @@ namespace MathCore.Models
             return new Matrix(data);
         }
 
-        public Matrix Add(Matrix other) =>
-            this.ToMathNet()
-                .Add(other
-                .ToMathNet())
-                .ToCore();
+        public Matrix Add(Matrix other)
+        {
+            if (other == null)
+                throw new ArgumentNullException(nameof(other));
 
-        public Matrix Multiply(Matrix other) => 
-            this.ToMathNet()
-                .Multiply(other
-                .ToMathNet())
-                .ToCore();
+            if (Rows != other.Rows || Columns != other.Columns)
+                throw new InvalidOperationException("Matrix dimensions must match for addition.");
+            
+            return this.ToMathNet()
+                        .Add(other.ToMathNet())
+                        .ToCore();
+        }
 
-        public Matrix Subtract(Matrix other) => 
-            this.ToMathNet()
-                .Subtract(other
-                .ToMathNet())
-                .ToCore();
+        public Matrix Subtract(Matrix other)
+        {
+            if (other == null)
+                throw new ArgumentNullException(nameof(other));
 
-        public Matrix Transpose() => 
+            if (Rows != other.Rows || Columns != other.Columns)
+                throw new InvalidOperationException("Matrix dimensions must match for subtraction.");
+
+            return this.ToMathNet()
+                       .Subtract(other.ToMathNet())
+                       .ToCore();
+        }
+
+        public Matrix Multiply(Matrix other)
+        {
+            if (other == null)
+                throw new ArgumentNullException(nameof(other));
+
+            if (Columns != other.Rows)
+                throw new InvalidOperationException(
+                    $"Matrix dimensions do not match for multiplication: A({Rows}x{Columns}) * B({other.Rows}x{other.Columns})");
+
+            return this.ToMathNet()
+                       .Multiply(other.ToMathNet())
+                       .ToCore();
+        }
+
+        public Matrix Transpose() =>
             this.ToMathNet()
                 .Transpose()
                 .ToCore();
 
+        public Matrix Inverse()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Inverse is only defined for square matrices.");
+
+            var mathNetMatrix = this.ToMathNet();
+
+            if (Math.Abs(mathNetMatrix.Determinant()) < 1e-12)
+                throw new InvalidOperationException("Matrix is singular and cannot be inverted.");
+
+            return mathNetMatrix
+                   .Inverse()
+                   .ToCore();
+        }
 
         public double Determinant()
         {
             if (Rows != Columns)
-                throw new InvalidOperationException("Детермінант визначається лише для квадратних матриць.");
+                throw new InvalidOperationException("Determinant is only defined for square matrices.");
 
-            var mathnetMatrix = MathMatrixAdapter.ToMathNet(this);
-            return mathnetMatrix.Determinant();
+            return this.ToMathNet().Determinant();
         }
 
     }
