@@ -153,6 +153,36 @@ namespace MathCore.Models
 
             return (eigenvalue,v.ToArray());
         }
-   
+
+        public (double Eigenvalue, double[] Eigenvector) InversePowerIteration(int maxIterations = 1000, double tolerance = 1e-10)
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Inverse power iteration requires a square matrix.");
+
+            var A = this.ToMathNet();
+            var lu = A.LU();
+            int n = Rows;
+
+            var v = Vector<double>.Build.Dense(n, 1.0).Normalize(2);
+            double eigenvalue = 0;
+
+            for (int iter = 0; iter < maxIterations; iter++)
+            {
+                var x = lu.Solve(v);
+                var newV = x.Normalize(2);
+
+                var newEigenvalue = 1.0 / newV.DotProduct(v);
+
+                if (Math.Abs(newEigenvalue - eigenvalue) < tolerance)
+                    return (newEigenvalue, newV.ToArray());
+
+                v = newV;
+                eigenvalue = newEigenvalue;
+            }
+
+            return (eigenvalue, v.ToArray());
+        }
+
+
     }
 }
