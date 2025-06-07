@@ -433,7 +433,33 @@ namespace MathCore.Models
             return eigenvalues;
         }
 
+        public double[] LeverrierFaddeev()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Matrix must be square.");
 
+            int n = Rows;
+            var A = this.ToMathNet();
+            var I = Matrix<double>.Build.DenseIdentity(n);
+
+            var B = I.Clone();
+            double[] coeffs = new double[n + 1];
+            coeffs[0] = 1.0;
+
+            for(int k = 1;k <= n; k++)
+            {
+                double trace = (A*B).Trace();
+                double a_k = -trace / k;
+                coeffs[k] = a_k;
+
+                if (k < n)
+                {
+                    B = A * B + a_k * I;
+                }
+            }
+
+            return coeffs;
+        }
 
 
 

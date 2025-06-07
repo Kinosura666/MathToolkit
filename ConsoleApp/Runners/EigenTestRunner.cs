@@ -74,10 +74,41 @@ namespace Runners
         public static void RunLR(Matrix A)
         {
             Console.WriteLine("=== LR Method ===");
-            var λs = A.LREigenValues();
-            for (int i = 0; i < λs.Length; i++)
-                Console.WriteLine($"lambda{i + 1} = {λs[i]:F10}");
+            var lambdas = A.LREigenValues();
+            for (int i = 0; i < lambdas.Length; i++)
+                Console.WriteLine($"lambda{i + 1} = {lambdas[i]:F10}");
         }
+
+        public static void RunLeverrier(Matrix A)
+        {
+            Console.WriteLine("=== Leverrier-Faddeev Method ===");
+            var coeffs = A.LeverrierFaddeev();
+
+            int degree = coeffs.Length - 1;
+
+            Console.WriteLine("Characteristic polynomial coefficients (from lambda^n to lambda^0):");
+            for (int i = 0; i < coeffs.Length; i++)
+                Console.WriteLine($"a_{degree - i} = {coeffs[i]:F10}");
+
+            Console.WriteLine("\nPolynomial:");
+            Console.Write("p(lambda) = ");
+            for (int i = 0; i < coeffs.Length; i++)
+            {
+                int power = degree - i;
+                double coeff = coeffs[i];
+                string sign = (coeff >= 0 && i > 0) ? " + " : (i > 0 ? " - " : "");
+
+                Console.Write($"{sign}{Math.Abs(coeff):F4}");
+
+                if (power > 1)
+                    Console.Write($"lambda^{power}");
+                else if (power == 1)
+                    Console.Write($"lambda");
+            }
+            Console.WriteLine();
+        }
+
+
 
 
     }
