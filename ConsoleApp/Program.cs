@@ -34,6 +34,10 @@ class Program
         //EigenTestRunner.RunJacobi(A);
         //EigenTestRunner.RunLR(A);
         //EigenTestRunner.RunLeverrier(B);
-        EigenTestRunner.RunKrylov(B);
+        //EigenTestRunner.RunKrylov(B);
+        EigenTestRunner.RunFrobeniusNorm(A);
+        EigenTestRunner.RunInfinityNorm(A);
+        EigenTestRunner.RunOneNorm(A);
+        EigenTestRunner.RunTwoNorm(A);
     }
 }

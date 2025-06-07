@@ -492,10 +492,52 @@ namespace MathCore.Models
             return coeffs;
         }
 
+        #endregion
 
+        #region Matrix Norms
 
+        public double FrobeniusNorm()
+        {
+            double sum = 0.0;
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Columns; j++)
+                    sum += Data[i, j] * Data[i, j];
+            return Math.Sqrt(sum);
+        }
 
+        public double InfinityNorm()
+        {
+            double max = 0.0;
+            for (int i = 0; i < Rows; i++)
+            {
+                double rowSum = 0.0;
+                for (int j = 0; j < Columns; j++)
+                    rowSum += Math.Abs(Data[i, j]);
+                if (rowSum > max) max = rowSum;
+            }
+            return max;
+        }
 
+        public double OneNorm()
+        {
+            double max = 0.0;
+            for (int j = 0; j < Columns; j++)
+            {
+                double colSum = 0.0;
+                for (int i = 0; i < Rows; i++)
+                    colSum += Math.Abs(Data[i, j]);
+                if (colSum > max) max = colSum;
+            }
+            return max;
+        }
+
+        public double TwoNorm()
+        {
+            var A = this.ToMathNet();
+            var AtA = A.TransposeThisAndMultiply(A);
+            var eigen = AtA.Evd(); 
+            return Math.Sqrt(eigen.EigenValues.Real().Maximum());
+        }
 
         #endregion
     }

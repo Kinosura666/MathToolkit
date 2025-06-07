@@ -132,6 +132,30 @@ namespace Runners
             Console.WriteLine();
         }
 
+        public static void RunFrobeniusNorm(Matrix A)
+        {
+            Console.WriteLine("=== Matrix Frobenius Norm ===");
+            Console.WriteLine($"Frobenius norm: {A.FrobeniusNorm():F6}");
+        }
+
+        public static void RunInfinityNorm(Matrix A)
+        {
+            Console.WriteLine("=== Matrix Infinity Norm ===");
+            Console.WriteLine($"Infinity norm:  {A.InfinityNorm():F6}");
+        }
+
+        public static void RunOneNorm(Matrix A)
+        {
+            Console.WriteLine("=== Matrix 1-Norm ===");
+            Console.WriteLine($"One norm:       {A.OneNorm():F6}");
+        }
+
+        public static void RunTwoNorm(Matrix A)
+        {
+            Console.WriteLine("=== Matrix 2-Norm (Spectral Norm) ===");
+            Console.WriteLine($"||A||2 = {A.TwoNorm():F6}");
+        }
+
 
 
 
