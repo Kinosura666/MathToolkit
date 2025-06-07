@@ -5,20 +5,23 @@ class Program
     static void Main()
     {
         var A = new Matrix(new double[,] {
-            { 4, -1, 0 },
-            { -1, 3, -1 },
-            { 0, -1, 2 }
+            { 4, 1 },
+            { 1, 3 }
         });
 
-        var (discs, min, max) = A.GershgorinDiscs();
+        var (λ, vectors) = A.JacobiEigenSolver();
 
-        Console.WriteLine("Gershgorin Discs:");
-        foreach (var (center, radius) in discs)
-            Console.WriteLine($"Center = {center:F2}, Radius = {radius:F2} -> [{center - radius:F2}, {center + radius:F2}]");
+        Console.WriteLine("Eigenvalues:");
+        foreach (var x in λ)
+            Console.WriteLine($"{x:F5}");
 
-        Console.WriteLine($"\nEstimated eigenvalue range: [{min:F2}, {max:F2}]");
-
-
+        Console.WriteLine("Eigenvectors (columns):");
+        for (int i = 0; i < vectors.GetLength(0); i++)
+        {
+            for (int j = 0; j < vectors.GetLength(1); j++)
+                Console.Write($"{vectors[i, j],10:F5}");
+            Console.WriteLine();
+        }
 
     }
 }

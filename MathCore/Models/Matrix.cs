@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathCore.Extentions;
+﻿using MathCore.Extentions;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Complex;
+using System.Text;
 
 namespace MathCore.Models
 {
     public class Matrix
     {
-        public double[,] Data {  get; }
+        public double[,] Data { get; }
 
         public int Rows => Data.GetLength(0);
         public int Columns => Data.GetLength(1);
@@ -32,9 +27,9 @@ namespace MathCore.Models
         public override string ToString()
         {
             var sb = new StringBuilder(Rows * Columns * 8);
-            for (int i = 0; i < Rows;i++)
+            for (int i = 0; i < Rows; i++)
             {
-                for(int j = 0; j < Columns; j++)
+                for (int j = 0; j < Columns; j++)
                 {
                     sb.Append($"{Data[i, j],8:F2}");
                 }
@@ -65,7 +60,7 @@ namespace MathCore.Models
 
             if (Rows != other.Rows || Columns != other.Columns)
                 throw new InvalidOperationException("Matrix dimensions must match for addition.");
-            
+
             return this.ToMathNet()
                         .Add(other.ToMathNet())
                         .ToCore();
@@ -156,7 +151,7 @@ namespace MathCore.Models
                 eigenvalue = newEigenvalue;
             }
 
-            return (eigenvalue,v.ToArray());
+            return (eigenvalue, v.ToArray());
         }
 
         public (double Eigenvalue, double[] Eigenvector) InversePowerIteration(int maxIterations = 1000, double tolerance = 1e-10)
@@ -239,12 +234,12 @@ namespace MathCore.Models
             var globalMax = double.NegativeInfinity;
 
 
-            for(int i = 0; i < Rows; i++)
+            for (int i = 0; i < Rows; i++)
             {
                 double center = Data[i, i];
                 double radius = 0;
 
-                for (int j = 0;j < Columns; j++)
+                for (int j = 0; j < Columns; j++)
                 {
                     if (i != j)
                         radius += Math.Abs(Data[i, j]);
@@ -260,10 +255,79 @@ namespace MathCore.Models
             return (discs, globalMin, globalMax);
         }
 
+        public (double[] Eigenvalues, double[,] Eigenvectors) JacobiEigenSolver(double tolerance = 1e-10, int maxIterations = 100)
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Jacobi method requires a square matrix.");
 
+            int n = Rows;
+            double[,] A = (double[,])Data.Clone();
+            double[,] V = new double[n, n];
 
+            for (int i = 0; i < n; i++)
+                V[i, i] = 1.0;
 
+            for (int iter = 0; iter < maxIterations; iter++)
+            {
+                int p = 0, q = 1;
+                double max = Math.Abs(A[p, q]);
 
-        #endregion
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = i + 1; j < n; j++)
+                    {
+                        if (Math.Abs(A[i, j]) > max)
+                        {
+                            max = Math.Abs(A[i, j]);
+                            p = i; q = j;
+                        }
+                    }
+                }
+                if (max < tolerance)
+                    break;
+
+                double θ = 0.5 * Math.Atan2(2 * A[p, q], A[q, q] - A[p, p]);
+                double cos = Math.Cos(θ);
+                double sin = Math.Sin(θ);
+
+                double[,] Anew = (double[,])A.Clone();
+
+                for (int i = 0; i < n; i++)
+                {
+                    if (i != p && i != q)
+                    {
+                        Anew[i, p] = Anew[p, i] = cos * A[i, p] - sin * A[i, q];
+                        Anew[i, q] = Anew[q, i] = sin * A[i, p] + cos * A[i, q];
+                    }
+                }
+
+                double app = cos * cos * A[p, p] - 2 * sin * cos * A[p, q] + sin * sin * A[q, q];
+                double aqq = sin * sin * A[p, p] + 2 * sin * cos * A[p, q] + cos * cos * A[q, q];
+
+                Anew[p, p] = app;
+                Anew[q, q] = aqq;
+                Anew[p, q] = Anew[q, p] = 0.0;
+
+                A = Anew;
+
+                for (int i = 0; i < n; i++)
+                {
+                    double vip = V[i, p];
+                    double viq = V[i, q];
+                    V[i, p] = cos * vip - sin * viq;
+                    V[i, q] = sin * vip + cos * viq;
+                }
+
+            }
+
+            var eigenvalues = new double[n];
+            for (int i = 0; i < n; i++)
+                eigenvalues[i] = A[i, i];
+
+            return (eigenvalues, V);
+        }
     }
+
+
+    #endregion
 }
