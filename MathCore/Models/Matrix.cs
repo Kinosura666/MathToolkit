@@ -154,34 +154,37 @@ namespace MathCore.Models
             return (eigenvalue, v.ToArray());
         }
 
-        public (double Eigenvalue, double[] Eigenvector) InversePowerIteration(int maxIterations = 1000, double tolerance = 1e-10)
+        public (double Eigenvalue, double[] Eigenvector) InversePowerIteration(
+            double eps = 1e-6, int maxIterations = 1000)
         {
             if (Rows != Columns)
-                throw new InvalidOperationException("Inverse power iteration requires a square matrix.");
+                throw new InvalidOperationException("Matrix must be square.");
 
-            var A = this.ToMathNet();
-            var lu = A.LU();
             int n = Rows;
+            var A = this.ToMathNet();
+            var solver = A.LU();
 
-            var v = Vector<double>.Build.Dense(n, 1.0).Normalize(2);
-            double eigenvalue = 0;
+            var x = Vector<double>.Build.Dense(n, 1.0).Normalize(2);
+            Vector<double> y;
+            double lambdaOld = 0, lambdaNew = 0;
 
             for (int iter = 0; iter < maxIterations; iter++)
             {
-                var x = lu.Solve(v);
-                var newV = x.Normalize(2);
+                y = solver.Solve(x);
+                y = y.Normalize(2);
 
-                var newEigenvalue = 1.0 / newV.DotProduct(v);
+                lambdaNew = y.DotProduct(A * y);
 
-                if (Math.Abs(newEigenvalue - eigenvalue) < tolerance)
-                    return (newEigenvalue, newV.ToArray());
+                if (Math.Abs(lambdaNew - lambdaOld) < eps)
+                    break;
 
-                v = newV;
-                eigenvalue = newEigenvalue;
+                lambdaOld = lambdaNew;
+                x = y;
             }
 
-            return (eigenvalue, v.ToArray());
+            return (lambdaNew, x.ToArray());
         }
+
 
         public (double Eigenvalue, double[] Eigenvector) RayleighQuotientIteration(
             int maxIterations = 100,
@@ -326,8 +329,52 @@ namespace MathCore.Models
 
             return (eigenvalues, V);
         }
+
+        public double[] QREigenValues(int maxIterations = 1000, double tolerance = 1e-10)
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("QR algorithm requires a square matrix.");
+
+            int n = Rows;
+            var A = Matrix<double>.Build.DenseOfArray(Data); 
+
+            for (int iter = 0; iter < maxIterations; iter++)
+            {
+                var qr = A.QR();
+                var Q = qr.Q;
+                var R = qr.R;
+
+                A = R * Q; 
+
+                bool converged = true;
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (Math.Abs(A[i, j]) > tolerance)
+                        {
+                            converged = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (converged)
+                    break;
+            }
+
+            var eigenvalues = new double[n];
+            for (int i = 0; i < n; i++)
+                eigenvalues[i] = A[i, i];
+
+            return eigenvalues;
+        }
+
+
+
+
+
+
+        #endregion
     }
-
-
-    #endregion
 }
