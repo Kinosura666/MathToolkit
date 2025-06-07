@@ -28,6 +28,7 @@ namespace MathCore.Models
             Data = data;
         }
 
+        #region Basic Operations
         public override string ToString()
         {
             var sb = new StringBuilder(Rows * Columns * 8);
@@ -125,6 +126,9 @@ namespace MathCore.Models
             return this.ToMathNet().Determinant();
         }
 
+        #endregion
+
+        #region Eigenvalue Methods
         public (double Eigenvalue, double[] Eigenvector) PowerIteration(int maxIterations = 1000, double tolerance = 1e-10)
         {
             if (Rows != Columns)
@@ -185,9 +189,9 @@ namespace MathCore.Models
         }
 
         public (double Eigenvalue, double[] Eigenvector) RayleighQuotientIteration(
-    int maxIterations = 100,
-    double tolerance = 1e-10,
-    double? initialGuess = null)
+            int maxIterations = 100,
+            double tolerance = 1e-10,
+            double? initialGuess = null)
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Rayleigh quotient iteration requires a square matrix.");
@@ -228,5 +232,38 @@ namespace MathCore.Models
             return (lambda, v.ToArray());
         }
 
+        public ((double Center, double Radius)[] Discs, double Min, double Max) GershgorinDiscs()
+        {
+            var discs = new (double Center, double Radius)[Rows];
+            var globalMin = double.PositiveInfinity;
+            var globalMax = double.NegativeInfinity;
+
+
+            for(int i = 0; i < Rows; i++)
+            {
+                double center = Data[i, i];
+                double radius = 0;
+
+                for (int j = 0;j < Columns; j++)
+                {
+                    if (i != j)
+                        radius += Math.Abs(Data[i, j]);
+                }
+
+                discs[i] = (center, radius);
+                double left = center - radius;
+                double right = center + radius;
+
+                if (left < globalMin) globalMin = left;
+                if (right > globalMax) globalMax = right;
+            }
+            return (discs, globalMin, globalMax);
+        }
+
+
+
+
+
+        #endregion
     }
 }

@@ -5,14 +5,20 @@ class Program
     static void Main()
     {
         var A = new Matrix(new double[,] {
-            { 2, 1 },
-            { 1, 2 }
+            { 4, -1, 0 },
+            { -1, 3, -1 },
+            { 0, -1, 2 }
         });
 
-        var (λ1, v1) = A.PowerIteration();
-        var (λ2, v2) = A.RayleighQuotientIteration(initialGuess: λ1);
+        var (discs, min, max) = A.GershgorinDiscs();
 
-        Console.WriteLine($"Refined eigenvalue: {λ2:F10}");
+        Console.WriteLine("Gershgorin Discs:");
+        foreach (var (center, radius) in discs)
+            Console.WriteLine($"Center = {center:F2}, Radius = {radius:F2} -> [{center - radius:F2}, {center + radius:F2}]");
+
+        Console.WriteLine($"\nEstimated eigenvalue range: [{min:F2}, {max:F2}]");
+
+
 
     }
 }
