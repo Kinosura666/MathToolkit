@@ -461,6 +461,36 @@ namespace MathCore.Models
             return coeffs;
         }
 
+        public double[] KrylovCharacteristicPolynomial()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Matrix must be square.");
+
+            int n = Rows;
+            var A = this.ToMathNet();
+
+            var v = Vector<double>.Build.Dense(n);
+            v[n - 1] = 1.0;
+
+            var krylovMatrix = Matrix<double>.Build.Dense(n, n);
+            var current = v.Clone();
+            for (int i = 0; i < n; i++)
+            {
+                krylovMatrix.SetColumn(i, current);
+                current = A * current;
+            }
+
+            var rhs = -current;
+
+            var coeffsReversed = krylovMatrix.Solve(rhs);
+
+            var coeffs = new double[n + 1];
+            coeffs[0] = 1.0; 
+            for (int i = 0; i < n; i++)
+                coeffs[i + 1] = coeffsReversed[n - 1 - i];
+
+            return coeffs;
+        }
 
 
 

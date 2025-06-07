@@ -108,6 +108,30 @@ namespace Runners
             Console.WriteLine();
         }
 
+        public static void RunKrylov(Matrix A)
+        {
+            Console.WriteLine("=== Krylov Method ===");
+            var coeffs = A.KrylovCharacteristicPolynomial();
+
+            int degree = coeffs.Length - 1;
+
+            Console.WriteLine("Characteristic polynomial coefficients (from lambda^n to lambda^0):");
+            for (int i = 0; i < coeffs.Length; i++)
+                Console.WriteLine($"a_{degree - i} = {coeffs[i]:F10}");
+
+            Console.Write("\nPolynomial: p(lambda) = ");
+            for (int i = 0; i < coeffs.Length; i++)
+            {
+                int power = degree - i;
+                string sign = (coeffs[i] >= 0 && i > 0) ? " + " : (i > 0 ? " - " : "");
+                Console.Write($"{sign}{Math.Abs(coeffs[i]):F4}");
+
+                if (power > 1) Console.Write($"lambda^{power}");
+                else if (power == 1) Console.Write("lambda");
+            }
+            Console.WriteLine();
+        }
+
 
 
 

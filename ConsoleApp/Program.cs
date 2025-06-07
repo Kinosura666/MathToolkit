@@ -33,6 +33,7 @@ class Program
         //EigenTestRunner.RunQR(symA);
         //EigenTestRunner.RunJacobi(A);
         //EigenTestRunner.RunLR(A);
-        EigenTestRunner.RunLeverrier(B);
+        //EigenTestRunner.RunLeverrier(B);
+        EigenTestRunner.RunKrylov(B);
     }
 }
