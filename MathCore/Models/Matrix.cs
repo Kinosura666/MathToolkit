@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathCore.Extentions;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Complex;
 
 namespace MathCore.Models
 {
@@ -183,6 +184,49 @@ namespace MathCore.Models
             return (eigenvalue, v.ToArray());
         }
 
+        public (double Eigenvalue, double[] Eigenvector) RayleighQuotientIteration(
+    int maxIterations = 100,
+    double tolerance = 1e-10,
+    double? initialGuess = null)
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Rayleigh quotient iteration requires a square matrix.");
+
+            var A = this.ToMathNet();
+            int n = Rows;
+
+            var v = Vector<double>.Build.Dense(n, 1.0).Normalize(2);
+
+            double lambda = initialGuess ?? v.DotProduct(A * v);
+
+            for (int iter = 0; iter < maxIterations; iter++)
+            {
+                var identity = Matrix<double>.Build.DenseIdentity(n);
+                var shifted = A - identity.Multiply(lambda);
+
+                Vector<double> x;
+                try
+                {
+                    var solver = shifted.LU();
+                    x = solver.Solve(v);
+                }
+                catch
+                {
+                    throw new InvalidOperationException("Matrix (A - λI) is singular or near-singular.");
+                }
+
+                var newV = x.Normalize(2);
+                var newLambda = newV.DotProduct(A * newV);
+
+                if (Math.Abs(newLambda - lambda) < tolerance)
+                    return (newLambda, newV.ToArray());
+
+                lambda = newLambda;
+                v = newV;
+            }
+
+            return (lambda, v.ToArray());
+        }
 
     }
 }
