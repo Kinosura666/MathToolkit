@@ -70,5 +70,15 @@ namespace Runners
                 Console.WriteLine($"  {x:F5}");
             Console.WriteLine(")");
         }
+
+        public static void RunLR(Matrix A)
+        {
+            Console.WriteLine("=== LR Method ===");
+            var λs = A.LREigenValues();
+            for (int i = 0; i < λs.Length; i++)
+                Console.WriteLine($"lambda{i + 1} = {λs[i]:F10}");
+        }
+
+
     }
 }

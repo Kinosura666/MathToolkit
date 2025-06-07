@@ -370,6 +370,72 @@ namespace MathCore.Models
             return eigenvalues;
         }
 
+        public double[] LREigenValues(int maxIterations = 1000, double epsilon = 1e-6)
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Matrix must be square.");
+
+            int n = Rows;
+            double[,] A_k = (double[,])Data.Clone();
+            double[,] A_next = new double[n, n];
+            double[,] L = new double[n, n];
+            double[,] R = new double[n, n];
+
+            for (int iter = 0; iter < maxIterations; iter++)
+            {
+                Array.Clear(L, 0, L.Length);
+                Array.Clear(R, 0, R.Length);
+
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++)
+                        R[i, j] = A_k[i, j];
+
+                for (int i = 0; i < n; i++)
+                    L[i, i] = 1.0;
+
+                for (int k = 0; k < n - 1; k++)
+                {
+                    for (int i = k + 1; i < n; i++)
+                    {
+                        double factor = R[i, k] / R[k, k];
+                        L[i, k] = factor;
+                        for (int j = k; j < n; j++)
+                        {
+                            R[i, j] -= factor * R[k, j];
+                        }
+                    }
+                }
+
+                A_next = new double[n, n];
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++)
+                        for (int k = 0; k < n; k++)
+                            A_next[i, j] += R[i, k] * L[k, j];
+
+                double norm = 0.0;
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++)
+                    {
+                        double diff = A_k[i, j] - A_next[i, j];
+                        norm += diff * diff;
+                    }
+
+                if (Math.Sqrt(norm) < epsilon)
+                    break;
+
+                Array.Copy(A_next, A_k, A_k.Length);
+            }
+
+            var eigenvalues = new double[n];
+            for (int i = 0; i < n; i++)
+                eigenvalues[i] = A_k[i, i];
+
+            return eigenvalues;
+        }
+
+
+
+
 
 
 

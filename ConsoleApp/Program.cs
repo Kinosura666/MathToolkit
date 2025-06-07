@@ -19,5 +19,12 @@ class Program
             { 0.5, 1.2, 1.0, 2.2 },
         });
 
+        //EigenTestRunner.RunGershgorin(A);
+        //EigenTestRunner.RunPower(A);
+        //EigenTestRunner.RunInverse(A);
+        //EigenTestRunner.RunRayleigh(A);
+        //EigenTestRunner.RunQR(symA);
+        //EigenTestRunner.RunJacobi(A);
+        EigenTestRunner.RunLR(A);
     }
 }
