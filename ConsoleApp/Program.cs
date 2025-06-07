@@ -26,6 +26,14 @@ class Program
             {1.6, 1.6, 3.6 }
         });
 
+        var m16 = new Matrix(new double[,]
+        {
+            { 1.8, 1.6, 1.7, 1.8},
+            { 1.6, 2.8, 1.5, 1.3},
+            { 1.7, 1.5, 3.8, 4.8},
+            { 1.8, 1.3, 1.4, 4.8}
+        });
+
         //EigenTestRunner.RunGershgorin(A);
         //EigenTestRunner.RunPower(A);
         //EigenTestRunner.RunInverse(A);
@@ -35,9 +43,10 @@ class Program
         //EigenTestRunner.RunLR(A);
         //EigenTestRunner.RunLeverrier(B);
         //EigenTestRunner.RunKrylov(B);
-        EigenTestRunner.RunFrobeniusNorm(A);
-        EigenTestRunner.RunInfinityNorm(A);
-        EigenTestRunner.RunOneNorm(A);
-        EigenTestRunner.RunTwoNorm(A);
+        //EigenTestRunner.RunFrobeniusNorm(A);
+        //EigenTestRunner.RunInfinityNorm(A);
+        //EigenTestRunner.RunOneNorm(A);
+        //EigenTestRunner.RunTwoNorm(A);
+        EigenTestRunner.RunConditionNumber(m16);
     }
 }

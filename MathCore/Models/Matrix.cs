@@ -494,7 +494,7 @@ namespace MathCore.Models
 
         #endregion
 
-        #region Matrix Norms
+        #region Matrix Stats (norm, cond)
 
         public double FrobeniusNorm()
         {
@@ -539,6 +539,32 @@ namespace MathCore.Models
             return Math.Sqrt(eigen.EigenValues.Real().Maximum());
         }
 
+        
+
+        public double ConditionNumber2()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Condition number is defined for square matrices only.");
+
+            var A = this.ToMathNet();
+            var AtA = A.TransposeThisAndMultiply(A);
+            var evd = AtA.Evd();
+
+            var eigenvalues = evd.EigenValues
+                                 .Select(c => c.Real)
+                                 .Where(x => x > 1e-12) 
+                                 .ToArray();
+
+            if (eigenvalues.Length == 0)
+                throw new InvalidOperationException("Matrix appears to be singular or nearly singular.");
+
+            double max = eigenvalues.Max();
+            double min = eigenvalues.Min();
+
+            return Math.Sqrt(max / min);
+        }
+
         #endregion
+
     }
 }

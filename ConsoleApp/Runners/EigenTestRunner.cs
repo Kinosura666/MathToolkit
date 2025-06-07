@@ -141,21 +141,26 @@ namespace Runners
         public static void RunInfinityNorm(Matrix A)
         {
             Console.WriteLine("=== Matrix Infinity Norm ===");
-            Console.WriteLine($"Infinity norm:  {A.InfinityNorm():F6}");
+            Console.WriteLine($"Infinity norm: {A.InfinityNorm():F6}");
         }
 
         public static void RunOneNorm(Matrix A)
         {
             Console.WriteLine("=== Matrix 1-Norm ===");
-            Console.WriteLine($"One norm:       {A.OneNorm():F6}");
+            Console.WriteLine($"One norm: {A.OneNorm():F6}");
         }
 
         public static void RunTwoNorm(Matrix A)
         {
-            Console.WriteLine("=== Matrix 2-Norm (Spectral Norm) ===");
+            Console.WriteLine("=== Matrix 2-Norm ===");
             Console.WriteLine($"||A||2 = {A.TwoNorm():F6}");
         }
 
+        public static void RunConditionNumber(Matrix A)
+        {
+            Console.WriteLine("=== Matrix Condition Number ===");
+            Console.WriteLine($"cond2(A) = {A.ConditionNumber2():F6}");
+        }
 
 
 
