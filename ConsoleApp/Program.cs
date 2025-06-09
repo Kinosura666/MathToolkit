@@ -58,6 +58,7 @@ class Program
         //DecompositionTestRunner.RunCholeskyDecomposition(Chol);
         //EigenTestRunner.RunSingularValues(A);
         //DecompositionTestRunner.RunSVD(A);
-        EigenTestRunner.RunPseudoInverse(A);
+        //EigenTestRunner.RunPseudoInverse(A);
+        EigenTestRunner.RunPower(A, 4);
     }
 }

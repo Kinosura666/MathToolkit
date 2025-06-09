@@ -192,5 +192,23 @@ namespace Runners
             }
         }
 
+        public static void RunPower(Matrix A, int k)
+        {
+            Console.WriteLine($"=== A^{k} ===");
+            Console.WriteLine("Matrix A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            try
+            {
+                var powered = A.Power(k);
+                Console.WriteLine($"\nA^{k}:");
+                Console.WriteLine(powered.ToFormattedString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Matrix power failed: {ex.Message}");
+            }
+        }
+
     }
 }

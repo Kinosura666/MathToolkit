@@ -129,6 +129,28 @@ namespace MathCore.Models
             return pinv.ToCore();
         }
 
+        public Matrix Power(int exponent)
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Only square matrices can be raised to a power.");
+
+            if (exponent < 0)
+                throw new ArgumentException("Negative exponents are not supported.");
+
+            var A = this.ToMathNet();
+
+            if (exponent == 0)
+                return MathNet.Numerics.LinearAlgebra.Double.DenseMatrix
+                    .CreateIdentity(Rows).ToCore();
+
+            var result = A.Clone();
+            for (int i = 1; i < exponent; i++)
+                result *= A;
+
+            return result.ToCore();
+        }
+
+
         #endregion
 
         #region Eigenvalue Methods
