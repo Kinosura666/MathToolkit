@@ -5,6 +5,7 @@ using MathCore.Models;
 using System.Data;
 using System.Windows.Controls;
 using MathCore.Extentions;
+using System.Windows.Input;
 
 namespace Desktop
 {
@@ -52,7 +53,6 @@ namespace Desktop
                     treeItem.IsExpanded = true;
             }
         }
-
 
         private void OnExecuteClick(object sender, RoutedEventArgs e)
         {
@@ -594,6 +594,43 @@ namespace Desktop
             {
                 ResultText.Text = $"Matrix power failed:\n{ex.Message}";
             }
+        }
+
+        private void OnThemeIconClick(object sender, RoutedEventArgs e)
+        {
+            bool isDark = ThemeToggle.IsChecked == true;
+            string theme = isDark ? "DarkTheme.xaml" : "LightTheme.xaml";
+            ThemeIcon.Text = isDark ? "🌙" : "☀";
+
+            var dict = new ResourceDictionary
+            {
+                Source = new Uri($"/Desktop;component/Themes/{theme}", UriKind.Relative)
+            };
+
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+        }
+        private void OnCloseClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void OnMinimizeClick(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void OnMaximizeClick(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = (this.WindowState == WindowState.Maximized)
+                ? WindowState.Normal
+                : WindowState.Maximized;
+        }
+
+        private void OnTitleBarMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
 
         private DataGrid GetMatrixGridFromTag(object sender)
