@@ -162,6 +162,11 @@ namespace MathCore.Models
             return sym.ToCore();
         }
 
+        public int Rank()
+        {
+            var A = this.ToMathNet();
+            return A.Rank();
+        }
 
         #endregion
 

@@ -228,5 +228,22 @@ namespace Runners
             }
         }
 
+        public static void RunRank(Matrix A)
+        {
+            Console.WriteLine("=== Matrix Rank ===");
+            Console.WriteLine("Matrix A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            try
+            {
+                int rank = A.Rank();
+                Console.WriteLine($"\nRank(A) = {rank}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Rank calculation failed: {ex.Message}");
+            }
+        }
+
     }
 }

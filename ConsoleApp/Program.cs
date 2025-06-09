@@ -60,7 +60,8 @@ class Program
         //DecompositionTestRunner.RunSVD(A);
         //EigenTestRunner.RunPseudoInverse(A);
         //EigenTestRunner.RunPower(A, 4);
-        EigenTestRunner.RunSymmetrize(A);
+        //EigenTestRunner.RunSymmetrize(A);
+        EigenTestRunner.RunRank(A);
 
     }
 }
