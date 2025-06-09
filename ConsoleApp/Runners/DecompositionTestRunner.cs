@@ -28,5 +28,27 @@ namespace Runners
             }
         }
 
+        public static void RunQRDecomposition(Matrix A)
+        {
+            Console.WriteLine("=== QR Decomposition ===");
+            Console.WriteLine("Matrix A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            try
+            {
+                var (Q, R) = A.QRDecomposition();
+
+                Console.WriteLine("\nQ (Orthogonal):");
+                Console.WriteLine(Q.ToFormattedString());
+
+                Console.WriteLine("R (Upper Triangular):");
+                Console.WriteLine(R.ToFormattedString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"QR decomposition failed: {ex.Message}");
+            }
+        }
+
     }
 }

@@ -48,6 +48,7 @@ class Program
         //EigenTestRunner.RunOneNorm(A);
         //EigenTestRunner.RunTwoNorm(A);
         //EigenTestRunner.RunConditionNumber(m16);
-        DecompositionTestRunner.RunLUDecomposition(A);
+        //DecompositionTestRunner.RunLUDecomposition(A);
+        DecompositionTestRunner.RunQRDecomposition(A);
     }
 }

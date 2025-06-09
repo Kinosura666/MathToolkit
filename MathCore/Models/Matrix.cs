@@ -608,6 +608,19 @@ namespace MathCore.Models
             return (new Matrix(L), new Matrix(U));
         }
 
+        public (Matrix Q, Matrix R) QRDecomposition()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("QR decomposition requires a square matrix.");
+
+            var A = Matrix<double>.Build.DenseOfArray(Data);
+            var qr = A.QR();
+
+            var Q = new Matrix(qr.Q.ToArray());
+            var R = new Matrix(qr.R.ToArray());
+
+            return (Q, R);
+        }
 
 
 
