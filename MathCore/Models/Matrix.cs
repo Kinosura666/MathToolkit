@@ -622,6 +622,44 @@ namespace MathCore.Models
             return (Q, R);
         }
 
+        public (Matrix L, Matrix LT) CholeskyDecomposition()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Cholesky decomposition requires a square matrix.");
+
+            int n = Rows;
+            var L = new double[n, n];
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j <= i; j++)
+                {
+                    double sum = 0.0;
+
+                    for (int k = 0; k < j; k++)
+                        sum += L[i, k] * L[j, k];
+
+                    if (i == j)
+                    {
+                        double value = Data[i, i] - sum;
+                        if (value <= 0)
+                            throw new InvalidOperationException("Matrix is not positive definite.");
+                        L[i, j] = Math.Sqrt(value);
+                    }
+                    else
+                    {
+                        L[i, j] = (Data[i, j] - sum) / L[j, j];
+                    }
+                }
+            }
+
+            var LT = new double[n, n];
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    LT[i, j] = L[j, i];
+
+            return (new Matrix(L), new Matrix(LT));
+        }
 
 
         #endregion

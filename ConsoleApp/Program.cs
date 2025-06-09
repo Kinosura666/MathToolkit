@@ -33,7 +33,12 @@ class Program
             { 1.7, 1.5, 3.8, 4.8},
             { 1.8, 1.3, 1.4, 4.8}
         });
-
+        var Chol = new Matrix(new double[,]
+        {
+            { 4, 2, 2 },
+            { 2, 10, 4 },
+            { 2, 4, 9 }
+        });
         //EigenTestRunner.RunGershgorin(A);
         //EigenTestRunner.RunPower(A);
         //EigenTestRunner.RunInverse(A);
@@ -49,6 +54,7 @@ class Program
         //EigenTestRunner.RunTwoNorm(A);
         //EigenTestRunner.RunConditionNumber(m16);
         //DecompositionTestRunner.RunLUDecomposition(A);
-        DecompositionTestRunner.RunQRDecomposition(A);
+        //DecompositionTestRunner.RunQRDecomposition(A);
+        DecompositionTestRunner.RunCholeskyDecomposition(Chol);
     }
 }

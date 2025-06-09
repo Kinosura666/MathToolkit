@@ -49,6 +49,28 @@ namespace Runners
                 Console.WriteLine($"QR decomposition failed: {ex.Message}");
             }
         }
+        public static void RunCholeskyDecomposition(Matrix A)
+        {
+            Console.WriteLine("=== Cholesky Decomposition ===");
+            Console.WriteLine("Matrix A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            try
+            {
+                var (L, LT) = A.CholeskyDecomposition();
+
+                Console.WriteLine("\nL (Lower Triangular):");
+                Console.WriteLine(L.ToFormattedString());
+
+                Console.WriteLine("L (Transposed):");
+                Console.WriteLine(LT.ToFormattedString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Cholesky decomposition failed: {ex.Message}");
+            }
+        }
+
 
     }
 }
