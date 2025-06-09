@@ -1,12 +1,127 @@
 ﻿<Window x:Class="Desktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Desktop"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Math Toolkit" Height="600" Width="1000">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionUnit" Value="Cell"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="ColumnWidth" Value="SizeToCells"/>
+            <Setter Property="AutoGenerateColumns" Value="True"/>
+            <Setter Property="MinColumnWidth" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="IsReadOnly" Value="False"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+            <TextBlock Text="Methods" FontWeight="Bold" Margin="0,0,0,10" FontSize="16"/>
+
+            <TreeView x:Name="MethodTree" Height="400" Loaded="MethodTree_Loaded">
+                <TreeViewItem Header="Matrix">
+                    <TreeViewItem Header="─ Spectral Methods ─" FontWeight="Bold" IsHitTestVisible="False"/>
+
+                    <TreeViewItem Header="Power Iteration"/>
+                    <TreeViewItem Header="Inverse Iteration"/>
+                    <TreeViewItem Header="Rayleigh Quotient Iteration"/>
+                    <TreeViewItem Header="Jacobi Method"/>
+                    <TreeViewItem Header="QR Method"/>
+                    <TreeViewItem Header="LR Method"/>
+
+                    <!-- Polynomial -->
+                    <TreeViewItem Header="─ Polynomial Methods ─" FontWeight="Bold" IsHitTestVisible="False"/>
+                    <TreeViewItem Header="Leverrier-Faddeev"/>
+                    <TreeViewItem Header="Krylov Method"/>
+
+                    <!-- Analysis -->
+                    <TreeViewItem Header="─ Matrix Analysis ─" FontWeight="Bold" IsHitTestVisible="False"/>
+                    <TreeViewItem Header="Matrix Norms"/>
+                    <TreeViewItem Header="Condition Number"/>
+                    <TreeViewItem Header="Gershgorin Discs"/>
+                </TreeViewItem>
+                
+                <TreeViewItem Header="Linear Systems">
+                    <TreeViewItem Header="Gaussian Elimination"/>
+                    <TreeViewItem Header="LU Decomposition"/>
+                    <TreeViewItem Header="Jacobi Solver"/>
+                    <TreeViewItem Header="Gauss-Seidel"/>
+                </TreeViewItem>
+                
+                <TreeViewItem Header="Sorting">
+                    <TreeViewItem Header="Bubble Sort"/>
+                    <TreeViewItem Header="Quick Sort"/>
+                </TreeViewItem>
+            </TreeView>
+
+            <Button Content="Execute" Click="OnExecuteClick" Margin="0,10,0,0"/>
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- A -->
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                    <TextBlock Text="Matrix A:" FontWeight="Bold"/>
+                    <DataGrid x:Name="MatrixGridA" AutoGenerateColumns="True" HeadersVisibility="All"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      SelectionUnit="Cell" SelectionMode="Single"
+                      Margin="0,5,0,5" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="+n" Tag="+A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="–n" Tag="-A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="T" Tag="A" Click="OnTransposeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="det" Tag="A" Click="OnDetClick" Width="50" Margin="0,0,5,0"/>
+                        <Button Content="inv" Tag="A" Click="OnInverseClick" Width="50" Margin="0,0,5,0"/>
+                        <Button Content="сlear" Tag="A" Click="OnClearClick" Width="60"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
+                    <Button Content="A + B" Click="OnAddMatricesClick" Margin="0,5"/>
+                    <Button Content="A - B" Click="OnSubtractMatricesClick" Margin="0,5"/>
+                    <Button Content="A × B" Click="OnMultiplyMatricesClick" Margin="0,5"/>
+                </StackPanel>
+
+                <!-- B -->
+                <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                    <TextBlock Text="Matrix B:" FontWeight="Bold"/>
+                    <DataGrid x:Name="MatrixGridB" AutoGenerateColumns="True" HeadersVisibility="All"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      SelectionUnit="Cell" SelectionMode="Single"
+                      Margin="0,5,0,5"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="+n" Tag="+B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="–n" Tag="-B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="T" Tag="B" Click="OnTransposeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="det" Tag="B" Click="OnDetClick" Width="50" Margin="0,0,5,0"/>
+                        <Button Content="inv" Tag="B" Click="OnInverseClick" Width="50" Margin="0,0,5,0"/>
+                        <Button Content="сlear" Tag="B" Click="OnClearClick" Width="60"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Result -->
+            <TextBlock Text="Result:" FontWeight="Bold" Margin="0,15,0,5"/>
+            <TextBox x:Name="ResultText" Height="160" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        </StackPanel>
 
     </Grid>
 </Window>

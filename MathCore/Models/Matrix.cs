@@ -1,5 +1,6 @@
 ﻿using MathCore.Extentions;
 using MathNet.Numerics.LinearAlgebra;
+using System.Data;
 using System.Text;
 
 namespace MathCore.Models
@@ -537,9 +538,7 @@ namespace MathCore.Models
             var AtA = A.TransposeThisAndMultiply(A);
             var eigen = AtA.Evd(); 
             return Math.Sqrt(eigen.EigenValues.Real().Maximum());
-        }
-
-        
+        } 
 
         public double ConditionNumber2()
         {
