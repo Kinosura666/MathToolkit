@@ -150,6 +150,18 @@ namespace MathCore.Models
             return result.ToCore();
         }
 
+        public Matrix Symmetrize()
+        {
+            if (Rows != Columns)
+                throw new InvalidOperationException("Symmetrization is defined only for square matrices.");
+
+            var A = this.ToMathNet();
+            var At = A.Transpose();
+
+            var sym = (A + At).Multiply(0.5);
+            return sym.ToCore();
+        }
+
 
         #endregion
 

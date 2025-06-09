@@ -210,5 +210,23 @@ namespace Runners
             }
         }
 
+        public static void RunSymmetrize(Matrix A)
+        {
+            Console.WriteLine("=== Symmetrized Matrix ===");
+            Console.WriteLine("Original A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            try
+            {
+                var symA = A.Symmetrize();
+                Console.WriteLine("\n(A + Aᵗ) / 2:");
+                Console.WriteLine(symA.ToFormattedString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Symmetrization failed: {ex.Message}");
+            }
+        }
+
     }
 }
