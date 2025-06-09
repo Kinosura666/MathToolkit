@@ -563,10 +563,17 @@ namespace MathCore.Models
             return Math.Sqrt(max / min);
         }
 
+        public double[] GetSingularValues()
+        {
+            var A = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(this.Data);
+            var svd = A.Svd();
+            return svd.S.ToArray();
+        }
+
         #endregion
 
         #region Decompositions
-        
+
         public (Matrix L, Matrix U) LUDecomposition()
         {
             if (Rows != Columns) 
@@ -661,6 +668,17 @@ namespace MathCore.Models
             return (new Matrix(L), new Matrix(LT));
         }
 
+        public (Matrix U, Matrix S, Matrix VT) SVD()
+        {
+            var A = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(this.Data);
+            var svd = A.Svd();
+
+            var U = new Matrix(svd.U.ToArray());
+            var S = new Matrix(svd.W.ToArray());   
+            var VT = new Matrix(svd.VT.ToArray());
+
+            return (U, S, VT);
+        }
 
         #endregion
     }

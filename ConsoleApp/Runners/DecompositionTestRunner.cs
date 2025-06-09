@@ -71,6 +71,23 @@ namespace Runners
             }
         }
 
+        public static void RunSVD(Matrix A)
+        {
+            Console.WriteLine("=== SVD Decomposition ===");
+            Console.WriteLine("Matrix A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            var (U, S, VT) = A.SVD();
+
+            Console.WriteLine("\nU (Left orthogonal):");
+            Console.WriteLine(U.ToFormattedString());
+
+            Console.WriteLine("S (Singular values - diagonal):");
+            Console.WriteLine(S.ToFormattedString());
+
+            Console.WriteLine("V (Right orthogonal transpose):");
+            Console.WriteLine(VT.ToFormattedString());
+        }
 
     }
 }

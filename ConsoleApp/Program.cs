@@ -55,6 +55,8 @@ class Program
         //EigenTestRunner.RunConditionNumber(m16);
         //DecompositionTestRunner.RunLUDecomposition(A);
         //DecompositionTestRunner.RunQRDecomposition(A);
-        DecompositionTestRunner.RunCholeskyDecomposition(Chol);
+        //DecompositionTestRunner.RunCholeskyDecomposition(Chol);
+        EigenTestRunner.RunSingularValues(A);
+        DecompositionTestRunner.RunSVD(A);
     }
 }

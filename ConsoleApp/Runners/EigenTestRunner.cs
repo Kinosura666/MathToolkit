@@ -162,6 +162,16 @@ namespace Runners
             Console.WriteLine($"cond2(A) = {A.ConditionNumber2():F6}");
         }
 
+        public static void RunSingularValues(Matrix A)
+        {
+            var singularValues = A.GetSingularValues();
+
+            Console.WriteLine("=== Singular Values ===");
+            for (int i = 0; i < singularValues.Length; i++)
+                Console.WriteLine($"singularity{i + 1} = {singularValues[i]:F6}");
+
+            Console.WriteLine($"Max singular value (Spectral norm): {singularValues[0]:F6}");
+        }
 
 
     }
