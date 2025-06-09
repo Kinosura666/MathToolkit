@@ -122,6 +122,13 @@ namespace MathCore.Models
             return this.ToMathNet().Determinant();
         }
 
+        public Matrix PseudoInverse()
+        {
+            var A = this.ToMathNet();
+            var pinv = A.PseudoInverse();
+            return pinv.ToCore();
+        }
+
         #endregion
 
         #region Eigenvalue Methods

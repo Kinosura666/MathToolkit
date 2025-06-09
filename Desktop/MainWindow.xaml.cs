@@ -81,14 +81,13 @@ namespace Desktop
                                 break;
                             }
 
-                        case "QR Method":
+                        case "Rayleigh Quotient Iteration":
                             {
-                                var lambda = A.QREigenValues();
-                                ResultText.Text = "QR\nEigenvalues:\n";
-                                for (int i = 0; i < lambda.Length; i++)
-                                {
-                                    ResultText.Text += $"λ{i + 1} ≈ {lambda[i]:F6}\n";
-                                }
+                                var (lambda, vector) = A.RayleighQuotientIteration();
+                                ResultText.Text = $"Rayleigh Quotient Iteration\n" +
+                                                   $"λ ≈ {lambda:F6}\n" +
+                                                  "Eigenvector:\n" +
+                                                  string.Join("\n", vector.Select(x => $"{x:F5}"));
                                 break;
                             }
 
@@ -111,6 +110,28 @@ namespace Desktop
 
                                     ResultText.Text += ")\n";
                                 }
+                                break;
+                            }
+
+                        case "QR Method":
+                            {
+                                var lambda = A.QREigenValues();
+                                ResultText.Text = "QR\nEigenvalues:\n";
+                                for (int i = 0; i < lambda.Length; i++)
+                                {
+                                    ResultText.Text += $"λ{i + 1} ≈ {lambda[i]:F6}\n";
+                                }
+                                break;
+                            }
+
+                        case "LR Method":
+                            {
+                                var lambdas = A.LREigenValues();
+                                ResultText.Text = "LR\nEigenvalues:\n";
+
+                                for (int i = 0; i < lambdas.Length; i++)
+                                    ResultText.Text += $"λ{i + 1} ≈ {lambdas[i]:F6}\n";
+
                                 break;
                             }
 
@@ -175,6 +196,89 @@ namespace Desktop
                                 break;
                             }
 
+                        case "LU Decomposition":
+                            {
+                                try
+                                {
+                                    var (L, U) = A.LUDecomposition();
+
+                                    ResultText.Text = "LU Decomposition:\n\n";
+                                    ResultText.Text += "L (Lower Triangular):\n";
+                                    ResultText.Text += L.ToFormattedString();
+
+                                    ResultText.Text += "\nU (Upper Triangular):\n";
+                                    ResultText.Text += U.ToFormattedString();
+                                }
+                                catch (Exception ex)
+                                {
+                                    ResultText.Text = $"LU decomposition failed: {ex.Message}";
+                                }
+                                break;
+                            }
+
+                        case "QR Decomposition":
+                            {
+                                try
+                                {
+                                    var (Q, R) = A.QRDecomposition();
+
+                                    ResultText.Text = "QR Decomposition:\n\n";
+                                    ResultText.Text += "Q (Orthogonal):\n";
+                                    ResultText.Text += Q.ToFormattedString();
+
+                                    ResultText.Text += "\nR (Upper Triangular):\n";
+                                    ResultText.Text += R.ToFormattedString();
+                                }
+                                catch (Exception ex)
+                                {
+                                    ResultText.Text = $"QR decomposition failed: {ex.Message}";
+                                }
+                                break;
+                            }
+
+                        case "Cholesky Decomposition":
+                            {
+                                try
+                                {
+                                    var (L, LT) = A.CholeskyDecomposition();
+
+                                    ResultText.Text = "Cholesky Decomposition:\n\n";
+                                    ResultText.Text += "L (Lower Triangular):\n";
+                                    ResultText.Text += L.ToFormattedString();
+
+                                    ResultText.Text += "\nL^T (Transposed):\n";
+                                    ResultText.Text += LT.ToFormattedString();
+                                }
+                                catch (Exception ex)
+                                {
+                                    ResultText.Text = $"Cholesky decomposition failed: {ex.Message}";
+                                }
+                                break;
+                            }
+
+                        case "SVD Decomposition":
+                            {
+                                var (U, S, VT) = A.SVD();
+
+                                ResultText.Text = "SVD Decomposition\n";
+
+                                ResultText.Text += "\nSingular values (diagonal of Σ):\n";
+                                var singularValues = A.GetSingularValues();
+                                for (int i = 0; i < singularValues.Length; i++)
+                                    ResultText.Text += $"σ{i + 1} ≈ {singularValues[i]:F6}\n";
+
+                                ResultText.Text += "\nMatrix U:\n";
+                                ResultText.Text += U.ToFormattedString();
+
+                                ResultText.Text += "\nMatrix Σ:\n";
+                                ResultText.Text += S.ToFormattedString();
+
+                                ResultText.Text += "\nMatrix V^T:\n";
+                                ResultText.Text += VT.ToFormattedString();
+
+                                break;
+                            }
+
                         case "Matrix Norms":
                             {
                                 var frob = A.FrobeniusNorm();
@@ -186,7 +290,7 @@ namespace Desktop
                                                   $"‣ Frobenius (Euclid) norm ||A||_F  ≈ {frob:F5}\n" +
                                                   $"‣ 1-norm ||A||_1  ≈ {norm1:F5}\n" +
                                                   $"‣ ∞-norm ||A||_∞  ≈ {normInf:F5}\n" +
-                                                  $"‣ 2-norm ||A||_2  ≈ {norm2:F5}\n\n";
+                                                  $"‣ 2-norm (spectral norm) ||A||_2  ≈ {norm2:F5}\n\n";
                                 break;
                             }
 
@@ -194,16 +298,6 @@ namespace Desktop
                             {
                                 var cond = A.ConditionNumber2();
                                 ResultText.Text = $"Condition number \ncond₂(A) ≈ {cond:F5}";
-                                break;
-                            }
-
-                        case "Rayleigh Quotient Iteration":
-                            {
-                                var (lambda, vector) = A.RayleighQuotientIteration();
-                                ResultText.Text = $"Rayleigh Quotient Iteration\n" +
-                                                   $"λ ≈ {lambda:F6}\n" +
-                                                  "Eigenvector:\n" +
-                                                  string.Join("\n", vector.Select(x => $"{x:F5}"));
                                 break;
                             }
 
@@ -222,14 +316,21 @@ namespace Desktop
                                 break;
                             }
 
-                        case "LR Method":
+                        case "Singular Values":
                             {
-                                var lambdas = A.LREigenValues();
-                                ResultText.Text = "LR\nEigenvalues:\n";
+                                var singularValues = A.GetSingularValues();
 
-                                for (int i = 0; i < lambdas.Length; i++)
-                                    ResultText.Text += $"λ{i + 1} ≈ {lambdas[i]:F6}\n";
+                                ResultText.Text = "Singular Values:\n";
+                                for (int i = 0; i < singularValues.Length; i++)
+                                    ResultText.Text += $"σ{i + 1} ≈ {singularValues[i]:F6}\n";
+                                
+                                break;
+                            }
 
+                        case "Pseudo-Inverse":
+                            {
+                                var pseudo = A.PseudoInverse();
+                                ResultText.Text = $"Pseudo-Inverse:\n" + pseudo.ToFormattedString();
                                 break;
                             }
 

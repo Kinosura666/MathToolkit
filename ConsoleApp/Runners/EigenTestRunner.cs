@@ -1,4 +1,5 @@
-﻿using MathCore.Models;
+﻿using MathCore.Extentions;
+using MathCore.Models;
 
 namespace Runners
 {
@@ -173,6 +174,23 @@ namespace Runners
             Console.WriteLine($"Max singular value (Spectral norm): {singularValues[0]:F6}");
         }
 
+        public static void RunPseudoInverse(Matrix A)
+        {
+            Console.WriteLine("=== Pseudo-Inverse (Moore–Penrose) ===");
+            Console.WriteLine("Matrix A:");
+            Console.WriteLine(A.ToFormattedString());
+
+            try
+            {
+                var pinv = A.PseudoInverse();
+                Console.WriteLine("\nPseudo-Inverse A⁺:");
+                Console.WriteLine(pinv.ToFormattedString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Pseudo-inverse failed: {ex.Message}");
+            }
+        }
 
     }
 }

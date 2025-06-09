@@ -43,12 +43,21 @@
                     <TreeViewItem Header="─ Polynomial Methods ─" FontWeight="Bold" IsHitTestVisible="False"/>
                     <TreeViewItem Header="Leverrier-Faddeev"/>
                     <TreeViewItem Header="Krylov Method"/>
-
+                    
+                    <!-- Decompositions-->
+                    <TreeViewItem Header="─ Decompositions ─" FontWeight="Bold" IsHitTestVisible="False"/>
+                    <TreeViewItem Header="LU Decomposition"/>
+                    <TreeViewItem Header="QR Decomposition"/>
+                    <TreeViewItem Header="Cholesky Decomposition"/>
+                    <TreeViewItem Header="SVD Decomposition"/>
+                    
                     <!-- Analysis -->
                     <TreeViewItem Header="─ Matrix Analysis ─" FontWeight="Bold" IsHitTestVisible="False"/>
                     <TreeViewItem Header="Matrix Norms"/>
                     <TreeViewItem Header="Condition Number"/>
+                    <TreeViewItem Header="Singular Values"/>
                     <TreeViewItem Header="Gershgorin Discs"/>
+                    <TreeViewItem Header="Pseudo-Inverse"/>
                 </TreeViewItem>
                 
                 <TreeViewItem Header="Linear Systems">
