@@ -61,7 +61,7 @@ class Program
         //EigenTestRunner.RunPseudoInverse(A);
         //EigenTestRunner.RunPower(A, 4);
         //EigenTestRunner.RunSymmetrize(A);
-        EigenTestRunner.RunRank(A);
+        //EigenTestRunner.RunRank(A);
 
     }
 }

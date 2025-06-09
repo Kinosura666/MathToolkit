@@ -334,6 +334,67 @@ namespace Desktop
                                 break;
                             }
 
+                        case "Determinant":
+                            {
+                                var det = A.Determinant();
+                                ResultText.Text = "Determinant\n";
+                                ResultText.Text += $"det(A) ≈ {det:F6}";
+                                break;
+                            }
+
+                        case "Inverse Matrix":
+                            {
+                                try
+                                {
+                                    var inv = A.Inverse();
+                                    ResultText.Text = "Inverse Matrix\n";
+                                    ResultText.Text += "A⁻¹ =\n" + inv.ToFormattedString();
+                                }
+                                catch (Exception ex)
+                                {
+                                    ResultText.Text = "Inverse Matrix\nMatrix is not invertible.\n" + ex.Message;
+                                }
+                                break;
+                            }
+
+                        case "Transpose Matrix":
+                            {
+                                var T = A.Transpose();
+                                ResultText.Text = "Transpose Matrix\n";
+                                ResultText.Text += "Aᵗ =\n" + T.ToFormattedString();
+                                break;
+                            }
+
+                        case "Symmetrize Matrix":
+                            {
+                                try
+                                {
+                                    var sym = A.Symmetrize();
+                                    ResultText.Text = "Symmetrized Matrix\n";
+                                    ResultText.Text += "A_sym = (A + Aᵗ) / 2 =\n" + sym.ToFormattedString();
+                                }
+                                catch (Exception ex)
+                                {
+                                    ResultText.Text = "Symmetrization failed:\n" + ex.Message;
+                                }
+                                break;
+                            }
+
+                        case "Matrix Rank":
+                            {
+                                try
+                                {
+                                    int rank = A.Rank();
+                                    ResultText.Text = "Matrix Rank\n";
+                                    ResultText.Text += $"rank(A) = {rank}";
+                                }
+                                catch (Exception ex)
+                                {
+                                    ResultText.Text = "Rank calculation failed:\n" + ex.Message;
+                                }
+                                break;
+                            }
+
                         default:
                             ResultText.Text = $"Method \"{method}\" not implemented.";
                             break;
@@ -506,6 +567,32 @@ namespace Desktop
             catch (Exception ex)
             {
                 ResultText.Text = $"Matrix {tag} is not invertible.\n{ex.Message}";
+            }
+        }
+
+        private void OnPowerClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var button = sender as Button;
+                var tag = button?.Tag?.ToString();
+
+                var powerBox = tag == "A" ? PowerBoxA : PowerBoxB;
+                var grid = tag == "A" ? MatrixGridA : MatrixGridB;
+
+                if (!int.TryParse(powerBox.Text, out int k))
+                {
+                    ResultText.Text = $"Please enter a valid integer exponent for matrix {tag}.";
+                    return;
+                }
+
+                var matrix = ReadMatrixFromGrid(grid);
+                var result = matrix.Power(k);
+                ResultText.Text = $"{tag}^{k} =\n" + result.ToFormattedString();
+            }
+            catch (Exception ex)
+            {
+                ResultText.Text = $"Matrix power failed:\n{ex.Message}";
             }
         }
 

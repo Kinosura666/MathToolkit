@@ -58,6 +58,11 @@
                     <TreeViewItem Header="Singular Values"/>
                     <TreeViewItem Header="Gershgorin Discs"/>
                     <TreeViewItem Header="Pseudo-Inverse"/>
+                    <TreeViewItem Header="Determinant"/>
+                    <TreeViewItem Header="Inverse Matrix"/>
+                    <TreeViewItem Header="Transpose Matrix"/>
+                    <TreeViewItem Header="Symmetrize Matrix"/>
+                    <TreeViewItem Header="Matrix Rank"/>
                 </TreeViewItem>
                 
                 <TreeViewItem Header="Linear Systems">
@@ -93,13 +98,21 @@
                       SelectionUnit="Cell" SelectionMode="Single"
                       Margin="0,5,0,5" />
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="+n" Tag="+A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
-                        <Button Content="–n" Tag="-A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="+" Tag="+A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="–" Tag="-A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
                         <Button Content="T" Tag="A" Click="OnTransposeClick" Width="40" Margin="0,0,5,0"/>
                         <Button Content="det" Tag="A" Click="OnDetClick" Width="50" Margin="0,0,5,0"/>
                         <Button Content="inv" Tag="A" Click="OnInverseClick" Width="50" Margin="0,0,5,0"/>
                         <Button Content="сlear" Tag="A" Click="OnClearClick" Width="60"/>
                     </StackPanel>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <Button Content="To the power of ->" Tag ="A" Click="OnPowerClick" />
+                        <TextBox x:Name="PowerBoxA" Grid.Column="1" Text="2" Margin="5,0,0,0"/>
+                    </Grid>
                 </StackPanel>
 
                 <!-- Buttons -->
@@ -117,13 +130,21 @@
                       SelectionUnit="Cell" SelectionMode="Single"
                       Margin="0,5,0,5"/>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="+n" Tag="+B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
-                        <Button Content="–n" Tag="-B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="+" Tag="+B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
+                        <Button Content="–" Tag="-B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
                         <Button Content="T" Tag="B" Click="OnTransposeClick" Width="40" Margin="0,0,5,0"/>
                         <Button Content="det" Tag="B" Click="OnDetClick" Width="50" Margin="0,0,5,0"/>
                         <Button Content="inv" Tag="B" Click="OnInverseClick" Width="50" Margin="0,0,5,0"/>
                         <Button Content="сlear" Tag="B" Click="OnClearClick" Width="60"/>
                     </StackPanel>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        <Button Content="To the power of ->" Tag ="B" Click="OnPowerClick" />
+                        <TextBox x:Name="PowerBoxB" Grid.Column="1" Text="2" Margin="5,0,0,0"/>
+                    </Grid>
                 </StackPanel>
             </Grid>
 
