@@ -6,10 +6,11 @@ using System.Data;
 using System.Windows.Controls;
 using MathCore.Extentions;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 
 namespace Desktop
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
@@ -627,11 +628,20 @@ namespace Desktop
                 : WindowState.Maximized;
         }
 
-        private void OnTitleBarMouseDown(object sender, MouseButtonEventArgs e)
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.ClickCount == 2)
+            {
+                this.WindowState = this.WindowState == WindowState.Maximized
+                    ? WindowState.Normal
+                    : WindowState.Maximized;
+            }
+            else if (e.ChangedButton == MouseButton.Left)
+            {
                 this.DragMove();
+            }
         }
+
 
         private DataGrid GetMatrixGridFromTag(object sender)
         {
@@ -640,5 +650,9 @@ namespace Desktop
             return tag == "A" ? MatrixGridA : MatrixGridB;
         }
 
+        private void ThemeToggle_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
