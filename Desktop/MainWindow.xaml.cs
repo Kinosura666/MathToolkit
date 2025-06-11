@@ -603,14 +603,26 @@ namespace Desktop
             string theme = isDark ? "DarkTheme.xaml" : "LightTheme.xaml";
             ThemeIcon.Text = isDark ? "🌙" : "☀";
 
-            var dict = new ResourceDictionary
+            var existingTheme = Application.Current.Resources.MergedDictionaries
+                .FirstOrDefault(d => d.Source != null && d.Source.OriginalString.Contains("Theme.xaml"));
+
+            var newTheme = new ResourceDictionary
             {
                 Source = new Uri($"/Desktop;component/Themes/{theme}", UriKind.Relative)
             };
 
-            Application.Current.Resources.MergedDictionaries.Clear();
-            Application.Current.Resources.MergedDictionaries.Add(dict);
+            if (existingTheme != null)
+            {
+                int index = Application.Current.Resources.MergedDictionaries.IndexOf(existingTheme);
+                Application.Current.Resources.MergedDictionaries[index] = newTheme;
+            }
+            else
+            {
+                Application.Current.Resources.MergedDictionaries.Add(newTheme);
+            }
         }
+
+
         private void OnCloseClick(object sender, RoutedEventArgs e)
         {
             this.Close();

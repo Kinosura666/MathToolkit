@@ -59,7 +59,8 @@
 
                     <Button Grid.Column="1" FontFamily="Segoe MDL2 Assets" Content="&#xE921;" Click="OnMinimizeClick" />
                     <Button Grid.Column="2" FontFamily="Segoe MDL2 Assets" Content="&#xE922;" Click="OnMaximizeClick" />
-                    <Button Grid.Column="3" FontFamily="Segoe MDL2 Assets" Content="&#xE8BB;" Click="OnCloseClick" />
+                    <Button Grid.Column="3" FontFamily="Segoe MDL2 Assets" Content="&#xE8BB;" Click="OnCloseClick"
+                            Style="{StaticResource CloseButtonStyle}"/>
                 </Grid>
 
             </Grid>
@@ -127,7 +128,7 @@
                         Checked="ThemeToggle_Checked">
 
                     <TextBlock x:Name="ThemeIcon"
-                        FontSize="18"
+                        FontSize="16"
                         Text="☀"
                         Foreground="{DynamicResource ForegroundBrush}"
                         HorizontalAlignment="Center"

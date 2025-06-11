@@ -93,10 +93,7 @@
         <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BorderBrush}" />
         <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource BorderBrush}" />
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="EnableRowVirtualization" Value="True"/>
-        <Setter Property="RowBackground" Value="{DynamicResource BackgroundBrush}" />
-        <Setter Property="AlternatingRowBackground" Value="{DynamicResource BackgroundBrush}" />
-        <Setter Property="GridLinesVisibility" Value="All" />
+        <Setter Property="EnableRowVirtualization" Value="True"/> 
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
     </Style>
@@ -109,10 +106,18 @@
     </Style>
 
     <Style TargetType="DataGridCell">
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <Setter Property="Background" Value="{DynamicResource DataGridCellBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DataGridCellBorderBrush}" />
         <Setter Property="BorderThickness" Value="0.5" />
-        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="BorderBrush" Value="DeepSkyBlue"/>
+                <Setter Property="BorderThickness" Value="1.5"/>
+                <Setter Property="Background" Value="#33FFFFFF"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="CloseButtonStyle" TargetType="Button">
