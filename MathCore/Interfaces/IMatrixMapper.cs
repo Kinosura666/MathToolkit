@@ -1,6 +1,6 @@
-﻿using MathCore.Models;
+﻿using MathCore.Libraries;
 
-namespace Web.Interfaces
+namespace MathCore.Interfaces
 {
     public interface IMatrixMapper
     {

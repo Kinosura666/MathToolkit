@@ -9,7 +9,7 @@ namespace MathCore.Models.Results
     public class JacobiEigenResult
     {
         public double[] Eigenvalues { get; set; }
-        public double[,] Eigenvectors { get; set; }
+        public double[][] Eigenvectors { get; set; }
         public int Iterations { get; set; }
         public bool Converged { get; set; }
     }

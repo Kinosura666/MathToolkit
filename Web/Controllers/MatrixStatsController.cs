@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Interfaces;
+using MathCore.Interfaces;
 using Web.Models;
 
 namespace Web.Controllers

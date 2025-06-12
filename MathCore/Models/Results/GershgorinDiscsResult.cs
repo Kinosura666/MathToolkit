@@ -8,9 +8,15 @@ namespace MathCore.Models.Results
 {
     public class GershgorinDiscsResult
     {
-        public (double Center, double Radius)[] Discs { get; set; }
+        public Disc[] Discs { get; set; } = [];
         public double MinBound { get; set; }
         public double MaxBound { get; set; }
+    }
+
+    public class Disc
+    {
+        public double Center { get; set; }
+        public double Radius { get; set; }
     }
 
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 using MathCore.Models;
-using Web.Mappers;
-using Web.Interfaces;
+using MathCore.Mappers;
+using MathCore.Interfaces;
 
 namespace Web.Controllers
 {

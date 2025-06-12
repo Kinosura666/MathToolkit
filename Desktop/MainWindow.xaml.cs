@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using MathCore.Models;
 using System.Data;
 using System.Windows.Controls;
 using MathCore.Extentions;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
+using MathCore.Libraries;
 
 namespace Desktop
 {
@@ -346,8 +346,8 @@ namespace Desktop
 
                                 for (int i = 0; i < result.Discs.Length; i++)
                                 {
-                                    var (center, radius) = result.Discs[i];
-                                    ResultText.Text += $"D{i + 1}: {center:F5} ± {radius:F5}\n";
+                                    var disc = result.Discs[i];
+                                    ResultText.Text += $"D{i + 1}: {disc.Center:F5} ± {disc.Radius:F5}\n";
                                 }
 
                                 ResultText.Text += $"\nApproximate eigenvalue range: [{result.MinBound:F5}; {result.MaxBound:F5}]\n";

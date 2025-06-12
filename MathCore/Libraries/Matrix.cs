@@ -3,8 +3,9 @@ using MathNet.Numerics.LinearAlgebra;
 using System.Data;
 using System.Text;
 using MathCore.Models.Results;
+using MathCore.Mappers;
 
-namespace MathCore.Models
+namespace MathCore.Libraries
 {
     public class Matrix
     {
@@ -292,7 +293,7 @@ namespace MathCore.Models
                         Iterations = iter + 1,
                         Converged = true
                     };
-                }    
+                }
 
                 lambda = newLambda;
                 v = newV;
@@ -309,7 +310,7 @@ namespace MathCore.Models
 
         public GershgorinDiscsResult GershgorinDiscs()
         {
-            var discs = new (double Center, double Radius)[Rows];
+            var discs = new Disc[Rows];
             var globalMin = double.PositiveInfinity;
             var globalMax = double.NegativeInfinity;
 
@@ -324,7 +325,7 @@ namespace MathCore.Models
                         radius += Math.Abs(Data[i, j]);
                 }
 
-                discs[i] = (center, radius);
+                discs[i] = new Disc { Center = center, Radius = radius };
                 double left = center - radius;
                 double right = center + radius;
 
@@ -371,7 +372,7 @@ namespace MathCore.Models
                     return new JacobiEigenResult
                     {
                         Eigenvalues = Enumerable.Range(0, n).Select(i => A[i, i]).ToArray(),
-                        Eigenvectors = V,
+                        Eigenvectors = Extentions.MatrixExtensions.ToJagged(V),
                         Iterations = iter + 1,
                         Converged = true
                     };
@@ -417,7 +418,7 @@ namespace MathCore.Models
             return new JacobiEigenResult
             {
                 Eigenvalues = Enumerable.Range(0, n).Select(i => A[i, i]).ToArray(),
-                Eigenvectors = V,
+                Eigenvectors = Extentions.MatrixExtensions.ToJagged(V),
                 Iterations = maxIterations,
                 Converged = false
             };
@@ -429,7 +430,7 @@ namespace MathCore.Models
                 throw new InvalidOperationException("QR algorithm requires a square matrix.");
 
             int n = Rows;
-            var A = Matrix<double>.Build.DenseOfArray(Data); 
+            var A = Matrix<double>.Build.DenseOfArray(Data);
 
             for (int iter = 0; iter < maxIterations; iter++)
             {
@@ -437,7 +438,7 @@ namespace MathCore.Models
                 var Q = qr.Q;
                 var R = qr.R;
 
-                A = R * Q; 
+                A = R * Q;
 
                 bool converged = true;
                 for (int i = 0; i < n; i++)
@@ -559,9 +560,9 @@ namespace MathCore.Models
             double[] coeffs = new double[n + 1];
             coeffs[0] = 1.0;
 
-            for(int k = 1;k <= n; k++)
+            for (int k = 1; k <= n; k++)
             {
-                double trace = (A*B).Trace();
+                double trace = (A * B).Trace();
                 double a_k = -trace / k;
                 coeffs[k] = a_k;
 
@@ -601,7 +602,7 @@ namespace MathCore.Models
             var coeffsReversed = krylovMatrix.Solve(rhs);
 
             var coeffs = new double[n + 1];
-            coeffs[0] = 1.0; 
+            coeffs[0] = 1.0;
             for (int i = 0; i < n; i++)
                 coeffs[i + 1] = coeffsReversed[n - 1 - i];
 
@@ -654,9 +655,9 @@ namespace MathCore.Models
         {
             var A = this.ToMathNet();
             var AtA = A.TransposeThisAndMultiply(A);
-            var eigen = AtA.Evd(); 
+            var eigen = AtA.Evd();
             return Math.Sqrt(eigen.EigenValues.Real().Maximum());
-        } 
+        }
 
         public double ConditionNumber2()
         {
@@ -669,7 +670,7 @@ namespace MathCore.Models
 
             var eigenvalues = evd.EigenValues
                                  .Select(c => c.Real)
-                                 .Where(x => x > 1e-12) 
+                                 .Where(x => x > 1e-12)
                                  .ToArray();
 
             if (eigenvalues.Length == 0)
@@ -683,7 +684,7 @@ namespace MathCore.Models
 
         public double[] GetSingularValues()
         {
-            var A = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(this.Data);
+            var A = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(Data);
             var svd = A.Svd();
             return svd.S.ToArray();
         }
@@ -694,15 +695,15 @@ namespace MathCore.Models
 
         public (Matrix L, Matrix U) LUDecomposition()
         {
-            if (Rows != Columns) 
+            if (Rows != Columns)
                 throw new InvalidOperationException("LU decomposition requires a square matrix.");
-            
-            int n = Rows;
-            var L = new double[n,n];
-            var U = new double[n,n];
-            var A = this.Data;
 
-            for(int i = 0; i < n; i++)
+            int n = Rows;
+            var L = new double[n, n];
+            var U = new double[n, n];
+            var A = Data;
+
+            for (int i = 0; i < n; i++)
             {
                 for (int k = i; k < n; k++)
                 {
@@ -716,7 +717,7 @@ namespace MathCore.Models
                 for (int k = i; k < n; k++)
                 {
                     if (i == k)
-                        L[i, i] = 1.0; 
+                        L[i, i] = 1.0;
                     else
                     {
                         double sum = 0;
@@ -788,11 +789,11 @@ namespace MathCore.Models
 
         public (Matrix U, Matrix S, Matrix VT) SVD()
         {
-            var A = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(this.Data);
+            var A = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(Data);
             var svd = A.Svd();
 
             var U = new Matrix(svd.U.ToArray());
-            var S = new Matrix(svd.W.ToArray());   
+            var S = new Matrix(svd.W.ToArray());
             var VT = new Matrix(svd.VT.ToArray());
 
             return (U, S, VT);

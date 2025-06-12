@@ -1,7 +1,7 @@
-﻿using Web.Interfaces;
-using MathCore.Models;
+﻿using MathCore.Interfaces;
+using MathCore.Libraries;
 
-namespace Web.Mappers
+namespace MathCore.Mappers
 {
     public class MatrixMapper : IMatrixMapper
     {
@@ -24,7 +24,6 @@ namespace Web.Mappers
             return new Matrix(result);
         }
 
-
         public double[][] ToJagged(Matrix matrix)
         {
             int rows = matrix.Rows;
@@ -41,6 +40,5 @@ namespace Web.Mappers
 
             return jagged;
         }
-
     }
 }

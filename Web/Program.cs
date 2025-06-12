@@ -1,5 +1,5 @@
-using Web.Interfaces;
-using Web.Mappers;
+using MathCore.Interfaces;
+using MathCore.Mappers;
 using Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
