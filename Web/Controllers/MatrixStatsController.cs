@@ -8,14 +8,19 @@ namespace Web.Controllers
     public class MatrixStatsController : ControllerBase
     {
         private readonly IMatrixMapper _mapper;
-        private readonly ILogger _logger;
-        public MatrixStatsController(IMatrixMapper mapper, ILogger logger)
+        private readonly ILogger<MatrixStatsController> _logger;
+        public MatrixStatsController(IMatrixMapper mapper, ILogger<MatrixStatsController> logger)
         {
             _mapper = mapper;
             _logger = logger;
         }
 
-        /* FrobeniusNorm, InfinityNorm, OneNorm, TwoNorm, ConditionNumber2, GetSingularValues */
+        /* FrobeniusNorm, InfinityNorm, OneNorm, TwoNorm, ConditionNumber2, GetSingularValues 
+          {
+              "a": [[0.5, 1.2, 1, 0.9], [1.2, 2, 0.5, 1.2], [1, 0.5, 1, 1], [0.5, 1.2, 1, 2.2]]
+          } 
+         */
+
 
         [HttpPost("FrobeniusNorm")]
         public ActionResult<double> FrobeniusNorm([FromBody] SingleMatrixDto dto)

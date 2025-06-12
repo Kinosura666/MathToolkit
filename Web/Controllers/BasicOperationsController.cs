@@ -10,12 +10,19 @@ namespace Web.Controllers
     public class BasicOperationsController : ControllerBase
     {
         private readonly IMatrixMapper _mapper;
-        private readonly ILogger _logger;
-        public BasicOperationsController(IMatrixMapper mapper, ILogger logger)
+        private readonly ILogger<BasicOperationsController> _logger;
+        public BasicOperationsController(IMatrixMapper mapper, ILogger<BasicOperationsController> logger)
         {
             _mapper = mapper;
             _logger = logger;
         }
+
+        /* Add, Subtract, Multiply, Transpose, Inverse, Determinant, PseudoInverse, Power, Symmetrize, Rank
+          {
+              "a": [[0.5, 1.2, 1, 0.9], [1.2, 2, 0.5, 1.2], [1, 0.5, 1, 1], [0.5, 1.2, 1, 2.2]],
+              "b": [[0.5, 1.2, 1, 0.9], [1.2, 2, 0.5, 1.2], [1, 0.5, 1, 1], [0.5, 1.2, 1, 2.2]]
+          } 
+         */
 
         [HttpPost("Add")]
         public ActionResult<double[][]> Add([FromBody] MatrixPairDto dto)
@@ -46,6 +53,7 @@ namespace Web.Controllers
             _logger.LogInformation("Multiply matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
+
         [HttpPost("Transpose")]
         public ActionResult<double[][]> Transpose([FromBody] SingleMatrixDto dto)
         {
