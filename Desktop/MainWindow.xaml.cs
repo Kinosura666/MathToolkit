@@ -68,78 +68,113 @@ namespace Desktop
                     {
                         case "Power Iteration":
                             {
-                                var (lambda, vector) = A.PowerIteration();
-                                ResultText.Text = $"Power Iteration\nλ ≈ {lambda:F6}\nEigenvector:\n" +
-                                                  string.Join("\n", vector.Select(x => $"{x:F5}"));
+                                var result = A.PowerIteration();
+
+                                ResultText.Text =
+                                    $"Power Iteration\n" +
+                                    $"λ ≈ {result.Eigenvalue:F6}\n" +
+                                    $"Iterations: {result.Iterations}\n" +
+                                    $"Converged: {(result.Converged ? "Yes" : "No")}\n\n" +
+                                    "Eigenvector:\n" +
+                                    string.Join("\n", result.Eigenvector.Select(x => $"{x:F5}"));
+
                                 break;
                             }
 
                         case "Inverse Iteration":
                             {
-                                var (lambda, vector) = A.InversePowerIteration();
-                                ResultText.Text = $"Inverse Iteration\nλ ≈ {lambda:F6}\nEigenvector:\n" +
-                                                  string.Join("\n", vector.Select(x => $"{x:F5}"));
+                                var result = A.InversePowerIteration();
+
+                                ResultText.Text =
+                                    $"Inverse Iteration\n" +
+                                    $"λ ≈ {result.Eigenvalue:F6}\n" +
+                                    $"Iterations: {result.Iterations}\n" +
+                                    $"Converged: {(result.Converged ? "Yes" : "No")}\n\n" +
+                                    "Eigenvector:\n" +
+                                    string.Join("\n", result.Eigenvector.Select(x => $"{x:F5}"));
+
                                 break;
                             }
 
                         case "Rayleigh Quotient Iteration":
                             {
-                                var (lambda, vector) = A.RayleighQuotientIteration();
-                                ResultText.Text = $"Rayleigh Quotient Iteration\n" +
-                                                   $"λ ≈ {lambda:F6}\n" +
-                                                  "Eigenvector:\n" +
-                                                  string.Join("\n", vector.Select(x => $"{x:F5}"));
+                                var result = A.RayleighQuotientIteration();
+
+                                ResultText.Text =
+                                    $"Rayleigh Quotient Iteration\n" +
+                                    $"λ ≈ {result.Eigenvalue:F6}\n" +
+                                    $"Iterations: {result.Iterations}\n" +
+                                    $"Converged: {(result.Converged ? "Yes" : "No")}\n\n" +
+                                    "Eigenvector:\n" +
+                                    string.Join("\n", result.Eigenvector.Select(x => $"{x:F5}"));
+
                                 break;
                             }
 
                         case "Jacobi Method":
                             {
-                                var (lambda, vector) = A.JacobiEigenSolver();
-                                ResultText.Text = "Jacobi\nEigenvalues and corresponding eigenvectors:\n";
+                                var result = A.JacobiEigenSolver();
 
-                                for (int i = 0; i < lambda.Length; i++)
+                                ResultText.Text = "Jacobi Method\n";
+                                ResultText.Text += $"Iterations: {result.Iterations}\n";
+                                ResultText.Text += $"Converged: {(result.Converged ? "Yes" : "No")}\n\n";
+                                ResultText.Text += "Eigenvalues and corresponding eigenvectors:\n";
+
+                                for (int i = 0; i < result.Eigenvalues.Length; i++)
                                 {
-                                    ResultText.Text += $"λ{i + 1} ≈ {lambda[i]:F6}\n";
+                                    ResultText.Text += $"λ{i + 1} ≈ {result.Eigenvalues[i]:F6}\n";
                                     ResultText.Text += "v = (";
 
-                                    for (int j = 0; j < vector.GetLength(0); j++)
+                                    for (int j = 0; j < result.Eigenvectors.GetLength(0); j++)
                                     {
-                                        ResultText.Text += $"{vector[j, i]:F5}";
-                                        if (j < vector.GetLength(0) - 1)
+                                        ResultText.Text += $"{result.Eigenvectors[j, i]:F5}";
+                                        if (j < result.Eigenvectors.GetLength(0) - 1)
                                             ResultText.Text += "; ";
                                     }
 
                                     ResultText.Text += ")\n";
                                 }
+
                                 break;
                             }
 
                         case "QR Method":
                             {
-                                var lambda = A.QREigenValues();
-                                ResultText.Text = "QR\nEigenvalues:\n";
-                                for (int i = 0; i < lambda.Length; i++)
+                                var result = A.QREigenValues();
+
+                                ResultText.Text = "QR Method\n";
+                                ResultText.Text += $"Iterations: {result.Iterations}\n";
+                                ResultText.Text += $"Converged: {(result.Converged ? "Yes" : "No")}\n\n";
+                                ResultText.Text += "Eigenvalues:\n";
+
+                                for (int i = 0; i < result.Eigenvalues.Length; i++)
                                 {
-                                    ResultText.Text += $"λ{i + 1} ≈ {lambda[i]:F6}\n";
+                                    ResultText.Text += $"λ{i + 1} ≈ {result.Eigenvalues[i]:F6}\n";
                                 }
+
                                 break;
                             }
 
                         case "LR Method":
                             {
-                                var lambdas = A.LREigenValues();
-                                ResultText.Text = "LR\nEigenvalues:\n";
+                                var result = A.LREigenValues();
+                                ResultText.Text = "LR Method\n";
+                                ResultText.Text += $"Iterations: {result.Iterations}\n";
+                                ResultText.Text += $"Converged: {(result.Converged ? "Yes" : "No")}\n\n";
+                                ResultText.Text += "Eigenvalues:\n";
 
-                                for (int i = 0; i < lambdas.Length; i++)
-                                    ResultText.Text += $"λ{i + 1} ≈ {lambdas[i]:F6}\n";
+                                for (int i = 0; i < result.Eigenvalues.Length; i++)
+                                    ResultText.Text += $"λ{i + 1} ≈ {result.Eigenvalues[i]:F6}\n";
 
                                 break;
                             }
 
                         case "Leverrier-Faddeev":
                             {
-                                var coeffs = A.LeverrierFaddeev();
-                                int degree = coeffs.Length - 1;
+                                var result = A.LeverrierFaddeev();
+                                var coeffs = result.Coefficients;
+                                int degree = result.Degree;
+
                                 ResultText.Text = "Leverrier-Faddeev\nCharacteristic polynomial:\n";
 
                                 for (int i = 0; i < coeffs.Length; i++)
@@ -168,8 +203,9 @@ namespace Desktop
 
                         case "Krylov Method":
                             {
-                                var coeffs = A.KrylovCharacteristicPolynomial();
-                                int degree = coeffs.Length - 1;
+                                var result = A.KrylovCharacteristicPolynomial();
+                                var coeffs = result.Coefficients;
+                                int degree = result.Degree;
 
                                 ResultText.Text = "Krylov\nCharacteristic polynomial:\n";
 
@@ -304,16 +340,17 @@ namespace Desktop
 
                         case "Gershgorin Discs":
                             {
-                                var (discs, min, max) = A.GershgorinDiscs();
+                                var result = A.GershgorinDiscs();
+
                                 ResultText.Text = "Gershgorin discs (center ± radius):\n\n";
 
-                                for (int i = 0; i < discs.Length; i++)
+                                for (int i = 0; i < result.Discs.Length; i++)
                                 {
-                                    var (center, radius) = discs[i];
+                                    var (center, radius) = result.Discs[i];
                                     ResultText.Text += $"D{i + 1}: {center:F5} ± {radius:F5}\n";
                                 }
 
-                                ResultText.Text += $"\nApproximate eigenvalue range: [{min:F5}; {max:F5}]\n";
+                                ResultText.Text += $"\nApproximate eigenvalue range: [{result.MinBound:F5}; {result.MaxBound:F5}]\n";
                                 break;
                             }
 

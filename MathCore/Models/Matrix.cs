@@ -2,6 +2,7 @@
 using MathNet.Numerics.LinearAlgebra;
 using System.Data;
 using System.Text;
+using MathCore.Models.Results;
 
 namespace MathCore.Models
 {
@@ -171,16 +172,13 @@ namespace MathCore.Models
         #endregion
 
         #region Eigenvalue Methods
-        public (double Eigenvalue, double[] Eigenvector) PowerIteration(int maxIterations = 1000, double tolerance = 1e-10)
+        public EigenIterationResult PowerIteration(int maxIterations = 1000, double tolerance = 1e-10)
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Power iteration requires a square matrix.");
 
             int n = Rows;
-
-            var v = Vector<double>.Build.Dense(n, 1.0);
-            v = v.Normalize(2);
-
+            var v = Vector<double>.Build.Dense(n, 1.0).Normalize(2);
             var A = this.ToMathNet();
             double eigenvalue = 0;
 
@@ -188,21 +186,31 @@ namespace MathCore.Models
             {
                 var Av = A * v;
                 var newEigenvalue = Av.DotProduct(v);
-
                 var newV = Av.Normalize(2);
 
                 if (Math.Abs(newEigenvalue - eigenvalue) < tolerance)
-                    return (newEigenvalue, newV.ToArray());
+                    return new EigenIterationResult
+                    {
+                        Eigenvalue = newEigenvalue,
+                        Eigenvector = newV.ToArray(),
+                        Iterations = iter + 1,
+                        Converged = true
+                    };
 
                 v = newV;
                 eigenvalue = newEigenvalue;
             }
 
-            return (eigenvalue, v.ToArray());
+            return new EigenIterationResult
+            {
+                Eigenvalue = eigenvalue,
+                Eigenvector = v.ToArray(),
+                Iterations = maxIterations,
+                Converged = false
+            };
         }
 
-        public (double Eigenvalue, double[] Eigenvector) InversePowerIteration(
-            double eps = 1e-6, int maxIterations = 1000)
+        public EigenIterationResult InversePowerIteration(double eps = 1e-6, int maxIterations = 1000)
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Matrix must be square.");
@@ -217,24 +225,32 @@ namespace MathCore.Models
 
             for (int iter = 0; iter < maxIterations; iter++)
             {
-                y = solver.Solve(x);
-                y = y.Normalize(2);
-
+                y = solver.Solve(x).Normalize(2);
                 lambdaNew = y.DotProduct(A * y);
 
                 if (Math.Abs(lambdaNew - lambdaOld) < eps)
-                    break;
+                    return new EigenIterationResult
+                    {
+                        Eigenvalue = lambdaNew,
+                        Eigenvector = y.ToArray(),
+                        Iterations = iter + 1,
+                        Converged = true
+                    };
 
                 lambdaOld = lambdaNew;
                 x = y;
             }
 
-            return (lambdaNew, x.ToArray());
+            return new EigenIterationResult
+            {
+                Eigenvalue = lambdaNew,
+                Eigenvector = x.ToArray(),
+                Iterations = maxIterations,
+                Converged = false
+            };
         }
 
-
-        public (double Eigenvalue, double[] Eigenvector) RayleighQuotientIteration(
-            int maxIterations = 100,
+        public EigenIterationResult RayleighQuotientIteration(int maxIterations = 100,
             double tolerance = 1e-10,
             double? initialGuess = null)
         {
@@ -268,21 +284,34 @@ namespace MathCore.Models
                 var newLambda = newV.DotProduct(A * newV);
 
                 if (Math.Abs(newLambda - lambda) < tolerance)
-                    return (newLambda, newV.ToArray());
+                {
+                    return new EigenIterationResult
+                    {
+                        Eigenvalue = newLambda,
+                        Eigenvector = newV.ToArray(),
+                        Iterations = iter + 1,
+                        Converged = true
+                    };
+                }    
 
                 lambda = newLambda;
                 v = newV;
             }
 
-            return (lambda, v.ToArray());
+            return new EigenIterationResult
+            {
+                Eigenvalue = lambda,
+                Eigenvector = v.ToArray(),
+                Iterations = maxIterations,
+                Converged = false
+            };
         }
 
-        public ((double Center, double Radius)[] Discs, double Min, double Max) GershgorinDiscs()
+        public GershgorinDiscsResult GershgorinDiscs()
         {
             var discs = new (double Center, double Radius)[Rows];
             var globalMin = double.PositiveInfinity;
             var globalMax = double.NegativeInfinity;
-
 
             for (int i = 0; i < Rows; i++)
             {
@@ -302,10 +331,15 @@ namespace MathCore.Models
                 if (left < globalMin) globalMin = left;
                 if (right > globalMax) globalMax = right;
             }
-            return (discs, globalMin, globalMax);
+            return new GershgorinDiscsResult
+            {
+                Discs = discs,
+                MinBound = globalMin,
+                MaxBound = globalMax
+            };
         }
 
-        public (double[] Eigenvalues, double[,] Eigenvectors) JacobiEigenSolver(double tolerance = 1e-10, int maxIterations = 100)
+        public JacobiEigenResult JacobiEigenSolver(double tolerance = 1e-10, int maxIterations = 100)
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Jacobi method requires a square matrix.");
@@ -334,7 +368,13 @@ namespace MathCore.Models
                     }
                 }
                 if (max < tolerance)
-                    break;
+                    return new JacobiEigenResult
+                    {
+                        Eigenvalues = Enumerable.Range(0, n).Select(i => A[i, i]).ToArray(),
+                        Eigenvectors = V,
+                        Iterations = iter + 1,
+                        Converged = true
+                    };
 
                 double θ = 0.5 * Math.Atan2(2 * A[p, q], A[q, q] - A[p, p]);
                 double cos = Math.Cos(θ);
@@ -374,10 +414,16 @@ namespace MathCore.Models
             for (int i = 0; i < n; i++)
                 eigenvalues[i] = A[i, i];
 
-            return (eigenvalues, V);
+            return new JacobiEigenResult
+            {
+                Eigenvalues = Enumerable.Range(0, n).Select(i => A[i, i]).ToArray(),
+                Eigenvectors = V,
+                Iterations = maxIterations,
+                Converged = false
+            };
         }
 
-        public double[] QREigenValues(int maxIterations = 1000, double tolerance = 1e-10)
+        public EigenvalueListResult QREigenValues(int maxIterations = 1000, double tolerance = 1e-10)
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("QR algorithm requires a square matrix.");
@@ -407,17 +453,27 @@ namespace MathCore.Models
                 }
 
                 if (converged)
-                    break;
+                    return new EigenvalueListResult
+                    {
+                        Eigenvalues = Enumerable.Range(0, n).Select(i => A[i, i]).ToArray(),
+                        Iterations = iter + 1,
+                        Converged = true
+                    };
             }
 
             var eigenvalues = new double[n];
             for (int i = 0; i < n; i++)
                 eigenvalues[i] = A[i, i];
 
-            return eigenvalues;
+            return new EigenvalueListResult
+            {
+                Eigenvalues = Enumerable.Range(0, n).Select(i => A[i, i]).ToArray(),
+                Iterations = maxIterations,
+                Converged = false
+            };
         }
 
-        public double[] LREigenValues(int maxIterations = 1000, double epsilon = 1e-6)
+        public EigenvalueListResult LREigenValues(int maxIterations = 1000, double epsilon = 1e-6)
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Matrix must be square.");
@@ -468,7 +524,12 @@ namespace MathCore.Models
                     }
 
                 if (Math.Sqrt(norm) < epsilon)
-                    break;
+                    return new EigenvalueListResult
+                    {
+                        Eigenvalues = Enumerable.Range(0, n).Select(i => A_next[i, i]).ToArray(),
+                        Iterations = iter + 1,
+                        Converged = true
+                    };
 
                 Array.Copy(A_next, A_k, A_k.Length);
             }
@@ -477,10 +538,15 @@ namespace MathCore.Models
             for (int i = 0; i < n; i++)
                 eigenvalues[i] = A_k[i, i];
 
-            return eigenvalues;
+            return new EigenvalueListResult
+            {
+                Eigenvalues = Enumerable.Range(0, n).Select(i => A_k[i, i]).ToArray(),
+                Iterations = maxIterations,
+                Converged = false
+            };
         }
 
-        public double[] LeverrierFaddeev()
+        public CharacteristicPolynomialResult LeverrierFaddeev()
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Matrix must be square.");
@@ -505,10 +571,13 @@ namespace MathCore.Models
                 }
             }
 
-            return coeffs;
+            return new CharacteristicPolynomialResult
+            {
+                Coefficients = coeffs
+            };
         }
 
-        public double[] KrylovCharacteristicPolynomial()
+        public CharacteristicPolynomialResult KrylovCharacteristicPolynomial()
         {
             if (Rows != Columns)
                 throw new InvalidOperationException("Matrix must be square.");
@@ -536,7 +605,10 @@ namespace MathCore.Models
             for (int i = 0; i < n; i++)
                 coeffs[i + 1] = coeffsReversed[n - 1 - i];
 
-            return coeffs;
+            return new CharacteristicPolynomialResult
+            {
+                Coefficients = coeffs
+            };
         }
 
         #endregion
