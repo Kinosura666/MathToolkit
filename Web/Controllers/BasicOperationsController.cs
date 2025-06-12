@@ -10,9 +10,11 @@ namespace Web.Controllers
     public class BasicOperationsController : ControllerBase
     {
         private readonly IMatrixMapper _mapper;
-        public BasicOperationsController(IMatrixMapper mapper)
+        private readonly ILogger _logger;
+        public BasicOperationsController(IMatrixMapper mapper, ILogger logger)
         {
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost("Add")]
@@ -21,6 +23,7 @@ namespace Web.Controllers
             var A = _mapper.FromJagged(dto.A);
             var B = _mapper.FromJagged(dto.B);
             var result = A.Add(B);
+            _logger.LogInformation("Add matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
 
@@ -30,6 +33,7 @@ namespace Web.Controllers
             var A = _mapper.FromJagged(dto.A);
             var B = _mapper.FromJagged(dto.B);
             var result = A.Subtract(B);
+            _logger.LogInformation("Subtract matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
 
@@ -39,6 +43,7 @@ namespace Web.Controllers
             var A = _mapper.FromJagged(dto.A);
             var B = _mapper.FromJagged(dto.B);
             var result = A.Multiply(B);
+            _logger.LogInformation("Multiply matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
         [HttpPost("Transpose")]
@@ -46,6 +51,7 @@ namespace Web.Controllers
         {
             var A = _mapper.FromJagged(dto.A);
             var result = A.Transpose();
+            _logger.LogInformation("Transpose matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
 
@@ -54,6 +60,7 @@ namespace Web.Controllers
         {
             var A = _mapper.FromJagged(dto.A);
             var result = A.Inverse();
+            _logger.LogInformation("Inverse matrix operation");
             return Ok(_mapper.ToJagged(result));
 
         }
@@ -64,6 +71,7 @@ namespace Web.Controllers
 
             var A = _mapper.FromJagged(dto.A);
             var result = A.Determinant();
+            _logger.LogInformation("Determinant matrix operation");
             return Ok(result);
 
         }
@@ -73,6 +81,7 @@ namespace Web.Controllers
         {
             var A = _mapper.FromJagged(dto.A);
             var result = A.PseudoInverse();
+            _logger.LogInformation("PseudoInverse matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
 
@@ -81,6 +90,7 @@ namespace Web.Controllers
         {
             var A = _mapper.FromJagged(dto.A);
             var result = A.Power(dto.exponent);
+            _logger.LogInformation("Power matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
 
@@ -89,6 +99,7 @@ namespace Web.Controllers
         {
             var A = _mapper.FromJagged(dto.A);
             var result = A.Symmetrize();
+            _logger.LogInformation("Symmetrize matrix operation");
             return Ok(_mapper.ToJagged(result));
         }
 
@@ -97,6 +108,7 @@ namespace Web.Controllers
         {
             var A = _mapper.FromJagged(dto.A);
             var result = A.Rank();
+            _logger.LogInformation("Rank matrix operation");
             return Ok(result);
         }
     }

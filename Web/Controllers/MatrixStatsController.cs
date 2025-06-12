@@ -1,6 +1,74 @@
-﻿namespace Web.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using Web.Interfaces;
+using Web.Models;
+
+namespace Web.Controllers
 {
-    public class MatrixStatsController
+    [Route("api/[controller]")]
+    public class MatrixStatsController : ControllerBase
     {
+        private readonly IMatrixMapper _mapper;
+        private readonly ILogger _logger;
+        public MatrixStatsController(IMatrixMapper mapper, ILogger logger)
+        {
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        /* FrobeniusNorm, InfinityNorm, OneNorm, TwoNorm, ConditionNumber2, GetSingularValues */
+
+        [HttpPost("FrobeniusNorm")]
+        public ActionResult<double> FrobeniusNorm([FromBody] SingleMatrixDto dto)
+        {
+            var A = _mapper.FromJagged(dto.A);
+            var result = A.FrobeniusNorm();
+            _logger.LogInformation("FrobeniusNorm matrix operation");
+            return Ok(result);
+        }
+
+        [HttpPost("InfinityNorm")]
+        public ActionResult<double> InfinityNorm([FromBody] SingleMatrixDto dto)
+        {
+            var A = _mapper.FromJagged(dto.A);
+            var result = A.InfinityNorm();
+            _logger.LogInformation("InfinityNorm matrix operation");
+            return Ok(result);
+        }
+
+        [HttpPost("OneNorm")]
+        public ActionResult<double> OneNorm([FromBody] SingleMatrixDto dto)
+        {
+            var A = _mapper.FromJagged(dto.A);
+            var result = A.OneNorm();
+            _logger.LogInformation("OneNorm matrix operation");
+            return Ok(result);
+        }
+
+        [HttpPost("TwoNorm")]
+        public ActionResult<double> TwoNorm([FromBody] SingleMatrixDto dto)
+        {
+            var A = _mapper.FromJagged(dto.A);
+            var result = A.TwoNorm();
+            _logger.LogInformation("TwoNorm matrix operation");
+            return Ok(result);
+        }
+
+        [HttpPost("ConditionNumber2")]
+        public ActionResult<double> ConditionNumber2([FromBody] SingleMatrixDto dto)
+        {
+            var A = _mapper.FromJagged(dto.A);
+            var result = A.ConditionNumber2();
+            _logger.LogInformation("ConditionNumber2 matrix operation");
+            return Ok(result);
+        }
+
+        [HttpPost("GetSingularValues")]
+        public ActionResult<double[]> GetSingularValues([FromBody] SingleMatrixDto dto)
+        {
+            var A = _mapper.FromJagged(dto.A);
+            var result = A.GetSingularValues();
+            _logger.LogInformation("GetSingularValues matrix operation");
+            return Ok(result);
+        }
     }
 }
