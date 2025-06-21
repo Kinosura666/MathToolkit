@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MathCore.Interfaces;
 using Web.Models;
+using MathCore.Libraries.MatrixCore;
 
 namespace Web.Controllers
 {
@@ -25,8 +26,8 @@ namespace Web.Controllers
         [HttpPost("FrobeniusNorm")]
         public ActionResult<double> FrobeniusNorm([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var result = A.FrobeniusNorm();
+            var matrix = _mapper.FromJagged(dto.A);
+            var result = MatrixStats.FrobeniusNorm(matrix);
             _logger.LogInformation("FrobeniusNorm matrix operation");
             return Ok(result);
         }
@@ -34,8 +35,8 @@ namespace Web.Controllers
         [HttpPost("InfinityNorm")]
         public ActionResult<double> InfinityNorm([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var result = A.InfinityNorm();
+            var matrix = _mapper.FromJagged(dto.A);
+            var result = MatrixStats.InfinityNorm(matrix);
             _logger.LogInformation("InfinityNorm matrix operation");
             return Ok(result);
         }
@@ -43,8 +44,8 @@ namespace Web.Controllers
         [HttpPost("OneNorm")]
         public ActionResult<double> OneNorm([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var result = A.OneNorm();
+            var matrix = _mapper.FromJagged(dto.A);
+            var result = MatrixStats.OneNorm(matrix);
             _logger.LogInformation("OneNorm matrix operation");
             return Ok(result);
         }
@@ -52,8 +53,8 @@ namespace Web.Controllers
         [HttpPost("TwoNorm")]
         public ActionResult<double> TwoNorm([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var result = A.TwoNorm();
+            var matrix = _mapper.FromJagged(dto.A);
+            var result = MatrixStats.TwoNorm(matrix);
             _logger.LogInformation("TwoNorm matrix operation");
             return Ok(result);
         }
@@ -61,8 +62,8 @@ namespace Web.Controllers
         [HttpPost("ConditionNumber2")]
         public ActionResult<double> ConditionNumber2([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var result = A.ConditionNumber2();
+            var matrix = _mapper.FromJagged(dto.A);
+            var result = MatrixStats.ConditionNumber2(matrix);
             _logger.LogInformation("ConditionNumber2 matrix operation");
             return Ok(result);
         }
@@ -70,8 +71,8 @@ namespace Web.Controllers
         [HttpPost("GetSingularValues")]
         public ActionResult<double[]> GetSingularValues([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var result = A.GetSingularValues();
+            var matrix = _mapper.FromJagged(dto.A);
+            var result = MatrixStats.GetSingularValues(matrix);
             _logger.LogInformation("GetSingularValues matrix operation");
             return Ok(result);
         }

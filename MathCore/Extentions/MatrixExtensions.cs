@@ -5,25 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
-using System.Runtime.CompilerServices;
 using System.Data;
-using MathCore.Libraries;
+using MathCore.Models;
 
 namespace MathCore.Extentions
 {
     public static class MatrixExtensions
     {
-        public static Matrix<double> ToMathNet(this Libraries.Matrix matrix)
+        public static Matrix<double> ToMathNet(this MatrixModel matrix)
         {
             return DenseMatrix.OfArray(matrix.Data);
         }
 
-        public static Libraries.Matrix ToCore(this Matrix<double> matrix)
+        public static MatrixModel ToCore(this Matrix<double> matrix)
         {
-            return new Libraries.Matrix(matrix.ToArray());
+            return new MatrixModel(matrix.ToArray());
         }
 
-        public static DataTable ToDataTable(this Libraries.Matrix matrix)
+        public static DataTable ToDataTable(this MatrixModel matrix)
         {
             var table = new DataTable();
             for (int j = 0; j < matrix.Columns; j++)
@@ -40,7 +39,7 @@ namespace MathCore.Extentions
             return table;
         }
 
-        public static string ToFormattedString(this Libraries.Matrix matrix)
+        public static string ToFormattedString(this MatrixModel matrix)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < matrix.Rows; i++)

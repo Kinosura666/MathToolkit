@@ -74,44 +74,49 @@
                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
                     <TextBlock Text="Methods" FontWeight="Bold" Margin="0,0,0,10" FontSize="16" Foreground="{DynamicResource ForegroundBrush}"/>
 
-                    <TreeView x:Name="MethodTree" Height="400" Loaded="MethodTree_Loaded" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
-                        <TreeViewItem Header="Matrix" Tag="section">
+                    <TreeView x:Name="MethodTree" 
+                              SelectedItemChanged="MethodTree_SelectedItemChanged" 
+                              Height="400" 
+                              Loaded="MethodTree_Loaded" 
+                              Background="{DynamicResource BackgroundBrush}" 
+                              Foreground="{DynamicResource ForegroundBrush}">
+                        <TreeViewItem Header="Matrix" Tag="root">
                             <TreeViewItem Header="─ Spectral Methods ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="Power Iteration"/>
-                            <TreeViewItem Header="Inverse Iteration"/>
-                            <TreeViewItem Header="Rayleigh Quotient Iteration"/>
-                            <TreeViewItem Header="Jacobi Method"/>
-                            <TreeViewItem Header="QR Method"/>
-                            <TreeViewItem Header="LR Method"/>
+                            <TreeViewItem Header="Power Iteration" Tag="matrix"/>
+                            <TreeViewItem Header="Inverse Iteration" Tag="matrix"/>
+                            <TreeViewItem Header="Rayleigh Quotient Iteration" Tag="matrix"/>
+                            <TreeViewItem Header="Jacobi Method" Tag="matrix"/>
+                            <TreeViewItem Header="QR Method" Tag="matrix"/>
+                            <TreeViewItem Header="LR Method" Tag="matrix"/>
                             <TreeViewItem Header="─ Polynomial Methods ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="Leverrier-Faddeev"/>
-                            <TreeViewItem Header="Krylov Method"/>
+                            <TreeViewItem Header="Leverrier-Faddeev" Tag="matrix"/>
+                            <TreeViewItem Header="Krylov Method" Tag="matrix"/>
                             <TreeViewItem Header="─ Decompositions ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="LU Decomposition"/>
-                            <TreeViewItem Header="QR Decomposition"/>
-                            <TreeViewItem Header="Cholesky Decomposition"/>
-                            <TreeViewItem Header="SVD Decomposition"/>
+                            <TreeViewItem Header="LU Decomposition" Tag="matrix"/>
+                            <TreeViewItem Header="QR Decomposition" Tag="matrix"/>
+                            <TreeViewItem Header="Cholesky Decomposition" Tag="matrix"/>
+                            <TreeViewItem Header="SVD Decomposition" Tag="matrix"/>
                             <TreeViewItem Header="─ Matrix Analysis ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="Matrix Norms"/>
-                            <TreeViewItem Header="Condition Number"/>
-                            <TreeViewItem Header="Singular Values"/>
-                            <TreeViewItem Header="Gershgorin Discs"/>
-                            <TreeViewItem Header="Pseudo-Inverse"/>
-                            <TreeViewItem Header="Determinant"/>
-                            <TreeViewItem Header="Inverse Matrix"/>
-                            <TreeViewItem Header="Transpose Matrix"/>
-                            <TreeViewItem Header="Symmetrize Matrix"/>
-                            <TreeViewItem Header="Matrix Rank"/>
+                            <TreeViewItem Header="Matrix Norms" Tag="matrix"/>
+                            <TreeViewItem Header="Condition Number" Tag="matrix"/>
+                            <TreeViewItem Header="Singular Values" Tag="matrix"/>
+                            <TreeViewItem Header="Gershgorin Discs" Tag="matrix"/>
+                            <TreeViewItem Header="Pseudo-Inverse" Tag="matrix"/>
+                            <TreeViewItem Header="Determinant" Tag="matrix"/>
+                            <TreeViewItem Header="Inverse Matrix" Tag="matrix"/>
+                            <TreeViewItem Header="Transpose Matrix" Tag="matrix"/>
+                            <TreeViewItem Header="Symmetrize Matrix" Tag="matrix"/>
+                            <TreeViewItem Header="Matrix Rank" Tag="matrix"/>
                         </TreeViewItem>
-                        <TreeViewItem Header="Linear Systems" Tag="section" >
+                        <TreeViewItem Header="Linear Systems" Tag="root" >
                             <TreeViewItem Header="Gaussian Elimination"/>
                             <TreeViewItem Header="LU Decomposition"/>
                             <TreeViewItem Header="Jacobi Solver"/>
                             <TreeViewItem Header="Gauss-Seidel"/>
                         </TreeViewItem>
-                        <TreeViewItem Header="Sorting" Tag="section">
-                            <TreeViewItem Header="Bubble Sort"/>
-                            <TreeViewItem Header="Quick Sort"/>
+                        <TreeViewItem Header="Sorting" Tag="root">
+                            <TreeViewItem Header="Bubble Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Quick Sort" Tag="sorting"/>
                         </TreeViewItem>
                     </TreeView>
 
@@ -139,113 +144,136 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Vertical" Background="{DynamicResource BackgroundBrush}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <!-- Matrix workspace-->
+                    <StackPanel x:Name="MatrixPanel" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <!-- A -->
-                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                            <TextBlock Text="Matrix A:" FontWeight="Bold"/>
-                            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
-                                <DataGrid x:Name="MatrixGridA"
-                                    AutoGenerateColumns="True"
-                                    HeadersVisibility="Column" 
-                                    CanUserAddRows="False"
-                                    CanUserDeleteRows="False"
-                                    SelectionUnit="Cell"
-                                    SelectionMode="Single"
-                                    Margin="0,5,0,5"
-                                    HorizontalAlignment="Center"
-                                    GridLinesVisibility="All"
-                                    EnableRowVirtualization="True"
+                            <!-- A -->
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                <TextBlock Text="Matrix A:" FontWeight="Bold"/>
+                                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
+                                    <DataGrid x:Name="MatrixGridA"
+                                        AutoGenerateColumns="True"
+                                        HeadersVisibility="Column" 
+                                        CanUserAddRows="False"
+                                        CanUserDeleteRows="False"
+                                        SelectionUnit="Cell"
+                                        SelectionMode="Single"
+                                        Margin="0,5,0,5"
+                                        HorizontalAlignment="Center"
+                                        GridLinesVisibility="All"
+                                        EnableRowVirtualization="True"
 
-                                    Background="{DynamicResource BackgroundBrush}"
-                                    Foreground="{DynamicResource ForegroundBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    RowBackground="{DynamicResource BackgroundBrush}"
-                                    AlternatingRowBackground="{DynamicResource BackgroundBrush}"
+                                        Background="{DynamicResource BackgroundBrush}"
+                                        Foreground="{DynamicResource ForegroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        RowBackground="{DynamicResource BackgroundBrush}"
+                                        AlternatingRowBackground="{DynamicResource BackgroundBrush}"
 
-                                    IsReadOnly="False"
-                                    CanUserResizeColumns="False"
-                                    CanUserResizeRows="False"
-                                    RowHeaderWidth="0" />
-                            </Border>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="+" Tag="+A" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
-                            <Button Content="–" Tag="-A" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
-                            <Button Content="T" Tag="A" Click="OnTransposeClick" Width="40" Margin="0,3,5,0"/>
-                            <Button Content="det" Tag="A" Click="OnDetClick" Width="50" Margin="0,3,5,0"/>
-                            <Button Content="inv" Tag="A" Click="OnInverseClick" Width="50" Margin="0,3,5,0"/>
-                                <Button Content="сlear" Tag="A" Click="OnClearClick" Width="60" Margin="0,3,5,0"/>
-                        </StackPanel>
-                            <Grid Margin="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="50" />
-                                </Grid.ColumnDefinitions>
-                                <Button Content="To the power of ->" Tag ="A" Click="OnPowerClick" />
-                                <TextBox x:Name="PowerBoxA" Grid.Column="1" Text="2" Margin="5,0,0,0"
-                                         TextAlignment="Center"/>
-                            </Grid>
-                        </StackPanel>
-
-                        <!-- Buttons -->
-                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
-                            <Button Content="A + B" Click="OnAddMatricesClick" Margin="0,5"/>
-                            <Button Content="A - B" Click="OnSubtractMatricesClick" Margin="0,5"/>
-                            <Button Content="A × B" Click="OnMultiplyMatricesClick" Margin="0,5"/>
-                        </StackPanel>
-
-                        <!-- B -->
-                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                            <TextBlock Text="Matrix B:" FontWeight="Bold"/>
-                            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
-                                <DataGrid x:Name="MatrixGridB"
-                                    AutoGenerateColumns="True"
-                                    HeadersVisibility="Column" 
-                                    CanUserAddRows="False"
-                                    CanUserDeleteRows="False"
-                                    SelectionUnit="Cell"
-                                    SelectionMode="Single"
-                                    Margin="0,5,0,5"
-                                    HorizontalAlignment="Center"
-                                    GridLinesVisibility="All"
-                                    EnableRowVirtualization="True"
-
-                                    Background="{DynamicResource BackgroundBrush}"
-                                    Foreground="{DynamicResource ForegroundBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    RowBackground="{DynamicResource BackgroundBrush}"
-                                    AlternatingRowBackground="{DynamicResource BackgroundBrush}"
-
-                                    IsReadOnly="False"
-                                    CanUserResizeColumns="False"
-                                    CanUserResizeRows="False"
-                                    RowHeaderWidth="0" />
-                            </Border>
+                                        IsReadOnly="False"
+                                        CanUserResizeColumns="False"
+                                        CanUserResizeRows="False"
+                                        RowHeaderWidth="0" />
+                                </Border>
                             <StackPanel Orientation="Horizontal">
-                            <Button Content="+" Tag="+B" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
-                            <Button Content="–" Tag="-B" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
-                            <Button Content="T" Tag="B" Click="OnTransposeClick" Width="40" Margin="0,3,5,0"/>
-                            <Button Content="det" Tag="B" Click="OnDetClick" Width="50" Margin="0,3,5,0"/>
-                            <Button Content="inv" Tag="B" Click="OnInverseClick" Width="50" Margin="0,3,5,0"/>
-                            <Button Content="сlear" Tag="B" Click="OnClearClick" Width="60" Margin="0,3,5,0" />
-                        </StackPanel>
-                            <Grid Margin="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="50" />
-                                </Grid.ColumnDefinitions>
-                                <Button Content="To the power of ->" Tag ="B" Click="OnPowerClick" />
-                                <TextBox x:Name="PowerBoxB" Grid.Column="1" Text="2" Margin="5,0,0,0"
-                                         TextAlignment="Center"/>
-                            </Grid>
+                                <Button Content="+" Tag="+A" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
+                                <Button Content="–" Tag="-A" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
+                                <Button Content="T" Tag="A" Click="OnTransposeClick" Width="40" Margin="0,3,5,0"/>
+                                <Button Content="det" Tag="A" Click="OnDetClick" Width="50" Margin="0,3,5,0"/>
+                                <Button Content="inv" Tag="A" Click="OnInverseClick" Width="50" Margin="0,3,5,0"/>
+                                    <Button Content="сlear" Tag="A" Click="OnClearClick" Width="60" Margin="0,3,5,0"/>
+                            </StackPanel>
+                                <Grid Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="To the power of ->" Tag ="A" Click="OnPowerClick" />
+                                    <TextBox x:Name="PowerBoxA" Grid.Column="1" Text="2" Margin="5,0,0,0"
+                                             TextAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
 
+                            <!-- Buttons -->
+                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
+                                <Button Content="A + B" Click="OnAddMatricesClick" Margin="0,5"/>
+                                <Button Content="A - B" Click="OnSubtractMatricesClick" Margin="0,5"/>
+                                <Button Content="A × B" Click="OnMultiplyMatricesClick" Margin="0,5"/>
+                            </StackPanel>
+
+                            <!-- B -->
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                <TextBlock Text="Matrix B:" FontWeight="Bold"/>
+                                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
+                                    <DataGrid x:Name="MatrixGridB"
+                                        AutoGenerateColumns="True"
+                                        HeadersVisibility="Column" 
+                                        CanUserAddRows="False"
+                                        CanUserDeleteRows="False"
+                                        SelectionUnit="Cell"
+                                        SelectionMode="Single"
+                                        Margin="0,5,0,5"
+                                        HorizontalAlignment="Center"
+                                        GridLinesVisibility="All"
+                                        EnableRowVirtualization="True"
+
+                                        Background="{DynamicResource BackgroundBrush}"
+                                        Foreground="{DynamicResource ForegroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        RowBackground="{DynamicResource BackgroundBrush}"
+                                        AlternatingRowBackground="{DynamicResource BackgroundBrush}"
+
+                                        IsReadOnly="False"
+                                        CanUserResizeColumns="False"
+                                        CanUserResizeRows="False"
+                                        RowHeaderWidth="0" />
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                <Button Content="+" Tag="+B" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
+                                <Button Content="–" Tag="-B" Click="OnResizeClick" Width="40" Margin="0,3,5,0"/>
+                                <Button Content="T" Tag="B" Click="OnTransposeClick" Width="40" Margin="0,3,5,0"/>
+                                <Button Content="det" Tag="B" Click="OnDetClick" Width="50" Margin="0,3,5,0"/>
+                                <Button Content="inv" Tag="B" Click="OnInverseClick" Width="50" Margin="0,3,5,0"/>
+                                <Button Content="сlear" Tag="B" Click="OnClearClick" Width="60" Margin="0,3,5,0" />
+                            </StackPanel>
+                                <Grid Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="To the power of ->" Tag ="B" Click="OnPowerClick" />
+                                    <TextBox x:Name="PowerBoxB" Grid.Column="1" Text="2" Margin="5,0,0,0"
+                                             TextAlignment="Center"/>
+                                </Grid>
+
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    
+                    <!-- Sorting workspace-->
+                    <StackPanel x:Name="SortingPanel" 
+                                Visibility="Collapsed"
+                                Margin="0,0,0,0"
+                                Background="{DynamicResource BackgroundBrush}"> 
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Array to sort:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="SortInputBox" 
+                                     Height="30" 
+                                     Margin="0,0,0,10"
+                                     Background="{DynamicResource BackgroundBrush}" 
+                                     Foreground="{DynamicResource ForegroundBrush}" 
+                                     BorderBrush="{DynamicResource BorderBrush}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Generate" Click="OnGenerateArrayClick" Margin="0,0,10,0"/>
+                                <Button Content="Clear" Click="OnClearArrayClick" Margin="0,0,10,0"/>
+                            </StackPanel>
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
 
                     <!-- Result -->
                     <TextBlock Text="Result:" FontWeight="Bold" Margin="0,15,0,5"/>
@@ -256,8 +284,11 @@
                         Background="{DynamicResource BackgroundBrush}"
                         Foreground="{DynamicResource ForegroundBrush}"
                         BorderBrush="{DynamicResource BorderBrush}" />
-
                 </StackPanel>
+
+                
+
+
             </Grid>
         </Grid>
     </Border>

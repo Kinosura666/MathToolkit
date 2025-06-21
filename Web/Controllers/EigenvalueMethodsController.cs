@@ -1,7 +1,8 @@
-﻿using MathCore.Models.Results;
+﻿using MathCore.Models.MatrixResults;
 using Microsoft.AspNetCore.Mvc;
 using MathCore.Interfaces;
 using Web.Models;
+using MathCore.Libraries.MatrixCore;
 
 namespace Web.Controllers
 {
@@ -28,7 +29,7 @@ namespace Web.Controllers
         public ActionResult<EigenIterationResult> PowerIteration([FromBody]SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.PowerIteration();
+            var result = MatrixEigen.PowerIteration(matrix);
             _logger.LogInformation("PowerIteration matrix operation");
             return Ok(result);
         }
@@ -37,7 +38,7 @@ namespace Web.Controllers
         public ActionResult<EigenIterationResult> InversePowerIteration([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.InversePowerIteration();
+            var result = MatrixEigen.InversePowerIteration(matrix);
             _logger.LogInformation("InversePowerIteration matrix operation");
             return Ok(result);
         }
@@ -46,7 +47,7 @@ namespace Web.Controllers
         public ActionResult<EigenIterationResult> RayleighQuotientIteration([FromBody]SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.RayleighQuotientIteration();
+            var result = MatrixEigen.RayleighQuotientIteration(matrix);
             _logger.LogInformation("RayleighQuotientIteration matrix operation");
             return Ok(result);
         }
@@ -55,7 +56,7 @@ namespace Web.Controllers
         public ActionResult<GershgorinDiscsResult> GershgorinDiscs([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.GershgorinDiscs();
+            var result = MatrixGershgorin.GershgorinDiscs(matrix);
             _logger.LogInformation("GershgorinDiscs matrix operation");
             return Ok(result);
         }
@@ -64,7 +65,7 @@ namespace Web.Controllers
         public ActionResult<JacobiEigenResult> JacobiEigenSolver([FromBody]SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.JacobiEigenSolver();
+            var result = MatrixEigen.JacobiEigenSolver(matrix);
             _logger.LogInformation("JacobiEigenSolver matrix operation");
             return Ok(result);
         }
@@ -73,7 +74,7 @@ namespace Web.Controllers
         public ActionResult<EigenvalueListResult> QREigenValues([FromBody]SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.QREigenValues();
+            var result = MatrixEigen.QREigenValues(matrix);
             _logger.LogInformation("QREigenValues matrix operation");
             return Ok(result);
         }
@@ -82,7 +83,7 @@ namespace Web.Controllers
         public ActionResult<EigenvalueListResult> LREigenValues([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.LREigenValues();
+            var result = MatrixEigen.LREigenValues(matrix);
             _logger.LogInformation("LREigenValues matrix operation");
             return Ok(result);
         }
@@ -91,7 +92,7 @@ namespace Web.Controllers
         public ActionResult<CharacteristicPolynomialResult> LeverrierFaddeev([FromBody]SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.LeverrierFaddeev();
+            var result = MatrixPolynomial.LeverrierFaddeev(matrix);
             _logger.LogInformation("LeverrierFaddeev matrix operation");
             return Ok(result);
         }
@@ -100,7 +101,7 @@ namespace Web.Controllers
         public ActionResult<CharacteristicPolynomialResult> KrylovCharacteristicPolynomial([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var result = matrix.KrylovCharacteristicPolynomial();
+            var result = MatrixPolynomial.KrylovCharacteristicPolynomial(matrix);
             _logger.LogInformation("KrylovCharacteristicPolynomial matrix operation");
             return Ok(result);
         }

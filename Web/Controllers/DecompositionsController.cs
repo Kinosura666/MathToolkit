@@ -1,5 +1,6 @@
 ﻿using MathCore.Interfaces;
-using MathCore.Models.Results;
+using MathCore.Libraries.MatrixCore;
+using MathCore.Models.MatrixResults;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
@@ -26,7 +27,7 @@ namespace Web.Controllers
         public ActionResult<TwoMatrixResult> LUDecomposition([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var (L, U) = matrix.LUDecomposition();
+            var (L, U) = MatrixDecompositions.LUDecomposition(matrix);
             _logger.LogInformation("LUDecomposition matrix operation");
             return Ok(new TwoMatrixResult
             {
@@ -41,7 +42,7 @@ namespace Web.Controllers
         public ActionResult<TwoMatrixResult> QRDecomposition([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var (Q, R) = matrix.QRDecomposition();
+            var (Q, R) = MatrixDecompositions.QRDecomposition(matrix);
             _logger.LogInformation("QRDecomposition matrix operation");
             return Ok(new TwoMatrixResult
             {
@@ -56,7 +57,7 @@ namespace Web.Controllers
         public ActionResult<TwoMatrixResult> CholeskyDecomposition([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
-            var (L, LT) = matrix.CholeskyDecomposition();
+            var (L, LT) = MatrixDecompositions.CholeskyDecomposition(matrix);
             _logger.LogInformation("CholeskyDecomposition matrix operation");
             return Ok(new TwoMatrixResult
             {
@@ -70,8 +71,8 @@ namespace Web.Controllers
         [HttpPost("SVD")]
         public ActionResult<SVDResult> SVD([FromBody] SingleMatrixDto dto)
         {
-            var A = _mapper.FromJagged(dto.A);
-            var (U, S, VT) = A.SVD();
+            var matrix = _mapper.FromJagged(dto.A);
+            var (U, S, VT) = MatrixDecompositions.SVD(matrix);
             _logger.LogInformation("SVD matrix operation");
             return Ok(new SVDResult
             {

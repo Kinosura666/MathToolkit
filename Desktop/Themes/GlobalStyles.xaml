@@ -27,6 +27,8 @@
         <Setter Property="Padding" Value="4,2"/>
         <Setter Property="Margin" Value="0,0,0,2"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontStyle" Value="Normal"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -43,28 +45,26 @@
                             BorderBrush="Transparent"
                             BorderThickness="0"
                             Padding="{TemplateBinding Padding}">
-
                             <ContentPresenter ContentSource="Header"/>
                         </Border>
 
                         <ItemsPresenter x:Name="ItemsHost"
-                        Grid.Row="1"
-                        Margin="18,0,0,0"
-                        Visibility="Collapsed"/>
+                                    Grid.Row="1"
+                                    Margin="18,0,0,0"
+                                    Visibility="Collapsed"/>
                     </Grid>
-                    
+
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsExpanded" Value="True">
-                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="Tag" Value="{x:Null}" />
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="Tag" Value="{x:Null}"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BorderBrush}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BorderBrush}"/>
                         </MultiTrigger>
 
                         <Trigger Property="IsSelected" Value="True">
@@ -72,12 +72,32 @@
                             <Setter TargetName="Bd" Property="BorderThickness" Value="1"/>
                             <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
                         </Trigger>
-
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
-
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <!-- Roots -->
+            <Trigger Property="Tag" Value="root">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Foreground" Value="LightSkyBlue"/>
+            </Trigger>
+
+            <!-- Sections -->
+            <Trigger Property="Tag" Value="section">
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="FontStyle" Value="Italic"/>
+                <Setter Property="IsHitTestVisible" Value="False"/>
+            </Trigger>
+
+            <!-- Chosen -->
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="#444444"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 

@@ -1,11 +1,12 @@
 ﻿using MathCore.Libraries;
+using MathCore.Models;
 
 namespace MathCore.Interfaces
 {
     public interface IMatrixMapper
     {
-        Matrix FromJagged(double[][] matrix);
+        MatrixModel FromJagged(double[][] matrix);
 
-        double[][] ToJagged(Matrix matrix);
+        double[][] ToJagged(MatrixModel matrix);
     }
 }

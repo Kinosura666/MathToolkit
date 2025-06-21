@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathCore.Models.Results
+namespace MathCore.Models.MatrixResults
 {
     public class TwoMatrixResult
     {

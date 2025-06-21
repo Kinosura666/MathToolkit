@@ -6,7 +6,8 @@ using System.Windows.Controls;
 using MathCore.Extentions;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
-using MathCore.Libraries;
+using MathCore.Libraries.MatrixCore;
+using MathCore.Models;
 
 namespace Desktop
 {
@@ -68,7 +69,7 @@ namespace Desktop
                     {
                         case "Power Iteration":
                             {
-                                var result = A.PowerIteration();
+                                var result = MatrixEigen.PowerIteration(A);
 
                                 ResultText.Text =
                                     $"Power Iteration\n" +
@@ -83,7 +84,7 @@ namespace Desktop
 
                         case "Inverse Iteration":
                             {
-                                var result = A.InversePowerIteration();
+                                var result = MatrixEigen.InversePowerIteration(A);
 
                                 ResultText.Text =
                                     $"Inverse Iteration\n" +
@@ -98,7 +99,7 @@ namespace Desktop
 
                         case "Rayleigh Quotient Iteration":
                             {
-                                var result = A.RayleighQuotientIteration();
+                                var result = MatrixEigen.RayleighQuotientIteration(A);
 
                                 ResultText.Text =
                                     $"Rayleigh Quotient Iteration\n" +
@@ -113,7 +114,7 @@ namespace Desktop
 
                         case "Jacobi Method":
                             {
-                                var result = A.JacobiEigenSolver();
+                                var result = MatrixEigen.JacobiEigenSolver(A);
 
                                 ResultText.Text = "Jacobi Method\n";
                                 ResultText.Text += $"Iterations: {result.Iterations}\n";
@@ -125,10 +126,10 @@ namespace Desktop
                                     ResultText.Text += $"λ{i + 1} ≈ {result.Eigenvalues[i]:F6}\n";
                                     ResultText.Text += "v = (";
 
-                                    for (int j = 0; j < result.Eigenvectors.GetLength(0); j++)
+                                    for (int j = 0; j < result.Eigenvectors.Length; j++)
                                     {
-                                        ResultText.Text += $"{result.Eigenvectors[j, i]:F5}";
-                                        if (j < result.Eigenvectors.GetLength(0) - 1)
+                                        ResultText.Text += $"{result.Eigenvectors[j][i]:F5}";
+                                        if (j < result.Eigenvectors.Length - 1)
                                             ResultText.Text += "; ";
                                     }
 
@@ -140,7 +141,7 @@ namespace Desktop
 
                         case "QR Method":
                             {
-                                var result = A.QREigenValues();
+                                var result = MatrixEigen.QREigenValues(A);
 
                                 ResultText.Text = "QR Method\n";
                                 ResultText.Text += $"Iterations: {result.Iterations}\n";
@@ -157,7 +158,7 @@ namespace Desktop
 
                         case "LR Method":
                             {
-                                var result = A.LREigenValues();
+                                var result = MatrixEigen.LREigenValues(A);
                                 ResultText.Text = "LR Method\n";
                                 ResultText.Text += $"Iterations: {result.Iterations}\n";
                                 ResultText.Text += $"Converged: {(result.Converged ? "Yes" : "No")}\n\n";
@@ -171,7 +172,7 @@ namespace Desktop
 
                         case "Leverrier-Faddeev":
                             {
-                                var result = A.LeverrierFaddeev();
+                                var result = MatrixPolynomial.LeverrierFaddeev(A);
                                 var coeffs = result.Coefficients;
                                 int degree = result.Degree;
 
@@ -203,7 +204,7 @@ namespace Desktop
 
                         case "Krylov Method":
                             {
-                                var result = A.KrylovCharacteristicPolynomial();
+                                var result = MatrixPolynomial.KrylovCharacteristicPolynomial(A);
                                 var coeffs = result.Coefficients;
                                 int degree = result.Degree;
 
@@ -237,7 +238,7 @@ namespace Desktop
                             {
                                 try
                                 {
-                                    var (L, U) = A.LUDecomposition();
+                                    var (L, U) = MatrixDecompositions.LUDecomposition(A);
 
                                     ResultText.Text = "LU Decomposition:\n\n";
                                     ResultText.Text += "L (Lower Triangular):\n";
@@ -257,7 +258,7 @@ namespace Desktop
                             {
                                 try
                                 {
-                                    var (Q, R) = A.QRDecomposition();
+                                    var (Q, R) = MatrixDecompositions.QRDecomposition(A);
 
                                     ResultText.Text = "QR Decomposition:\n\n";
                                     ResultText.Text += "Q (Orthogonal):\n";
@@ -277,7 +278,7 @@ namespace Desktop
                             {
                                 try
                                 {
-                                    var (L, LT) = A.CholeskyDecomposition();
+                                    var (L, LT) = MatrixDecompositions.CholeskyDecomposition(A);
 
                                     ResultText.Text = "Cholesky Decomposition:\n\n";
                                     ResultText.Text += "L (Lower Triangular):\n";
@@ -295,12 +296,12 @@ namespace Desktop
 
                         case "SVD Decomposition":
                             {
-                                var (U, S, VT) = A.SVD();
+                                var (U, S, VT) = MatrixDecompositions.SVD(A);
 
                                 ResultText.Text = "SVD Decomposition\n";
 
                                 ResultText.Text += "\nSingular values (diagonal of Σ):\n";
-                                var singularValues = A.GetSingularValues();
+                                var singularValues = MatrixStats.GetSingularValues(A);
                                 for (int i = 0; i < singularValues.Length; i++)
                                     ResultText.Text += $"σ{i + 1} ≈ {singularValues[i]:F6}\n";
 
@@ -318,10 +319,10 @@ namespace Desktop
 
                         case "Matrix Norms":
                             {
-                                var frob = A.FrobeniusNorm();
-                                var norm1 = A.OneNorm();
-                                var normInf = A.InfinityNorm();
-                                var norm2 = A.TwoNorm();
+                                var frob = MatrixStats.FrobeniusNorm(A);
+                                var norm1 = MatrixStats.OneNorm(A);
+                                var normInf = MatrixStats.InfinityNorm(A);
+                                var norm2 = MatrixStats.TwoNorm(A);
 
                                 ResultText.Text = "Matrix norms:\n\n" +
                                                   $"‣ Frobenius (Euclid) norm ||A||_F  ≈ {frob:F5}\n" +
@@ -333,14 +334,14 @@ namespace Desktop
 
                         case "Condition Number":
                             {
-                                var cond = A.ConditionNumber2();
+                                var cond = MatrixStats.ConditionNumber2(A);
                                 ResultText.Text = $"Condition number \ncond₂(A) ≈ {cond:F5}";
                                 break;
                             }
 
                         case "Gershgorin Discs":
                             {
-                                var result = A.GershgorinDiscs();
+                                var result = MatrixGershgorin.GershgorinDiscs(A);
 
                                 ResultText.Text = "Gershgorin discs (center ± radius):\n\n";
 
@@ -356,7 +357,7 @@ namespace Desktop
 
                         case "Singular Values":
                             {
-                                var singularValues = A.GetSingularValues();
+                                var singularValues = MatrixStats.GetSingularValues(A);
 
                                 ResultText.Text = "Singular Values:\n";
                                 for (int i = 0; i < singularValues.Length; i++)
@@ -367,14 +368,14 @@ namespace Desktop
 
                         case "Pseudo-Inverse":
                             {
-                                var pseudo = A.PseudoInverse();
+                                var pseudo = MatrixOperations.PseudoInverse(A);
                                 ResultText.Text = $"Pseudo-Inverse:\n" + pseudo.ToFormattedString();
                                 break;
                             }
 
                         case "Determinant":
                             {
-                                var det = A.Determinant();
+                                var det = MatrixOperations.Determinant(A);
                                 ResultText.Text = "Determinant\n";
                                 ResultText.Text += $"det(A) ≈ {det:F6}";
                                 break;
@@ -384,7 +385,7 @@ namespace Desktop
                             {
                                 try
                                 {
-                                    var inv = A.Inverse();
+                                    var inv = MatrixOperations.Inverse(A);
                                     ResultText.Text = "Inverse Matrix\n";
                                     ResultText.Text += "A⁻¹ =\n" + inv.ToFormattedString();
                                 }
@@ -397,7 +398,7 @@ namespace Desktop
 
                         case "Transpose Matrix":
                             {
-                                var T = A.Transpose();
+                                var T = MatrixOperations.Transpose(A);
                                 ResultText.Text = "Transpose Matrix\n";
                                 ResultText.Text += "Aᵗ =\n" + T.ToFormattedString();
                                 break;
@@ -407,7 +408,7 @@ namespace Desktop
                             {
                                 try
                                 {
-                                    var sym = A.Symmetrize();
+                                    var sym = MatrixOperations.Symmetrize(A);
                                     ResultText.Text = "Symmetrized Matrix\n";
                                     ResultText.Text += "A_sym = (A + Aᵗ) / 2 =\n" + sym.ToFormattedString();
                                 }
@@ -422,7 +423,7 @@ namespace Desktop
                             {
                                 try
                                 {
-                                    int rank = A.Rank();
+                                    int rank = MatrixOperations.Rank(A);
                                     ResultText.Text = "Matrix Rank\n";
                                     ResultText.Text += $"rank(A) = {rank}";
                                 }
@@ -449,7 +450,7 @@ namespace Desktop
             }
         }
 
-        private Matrix ReadMatrixFromGrid(System.Windows.Controls.DataGrid grid)
+        private MatrixModel ReadMatrixFromGrid(System.Windows.Controls.DataGrid grid)
         {
             var view = (DataView)grid.ItemsSource;
             var table = view.ToTable();
@@ -461,7 +462,7 @@ namespace Desktop
                 for (int j = 0; j < cols; j++)
                     data[i, j] = Convert.ToDouble(table.Rows[i][j]);
 
-            return new Matrix(data);
+            return new MatrixModel(data);
         }
 
         private void AdjustMatrixSize(System.Windows.Controls.DataGrid grid, int deltaRows, int deltaCols)
@@ -516,7 +517,7 @@ namespace Desktop
                 return;
             }
 
-            var C = A.Add(B);
+            var C = MatrixOperations.Add(A, B);
             ResultText.Text = "A + B:\n" + C.ToString();
         }
 
@@ -529,7 +530,7 @@ namespace Desktop
                 ResultText.Text = "Subtraction requires matrices of same size.";
                 return;
             }
-            var C = A.Subtract(B);
+            var C = MatrixOperations.Subtract(A, B);
             ResultText.Text = "A - B:\n" + C.ToString();
         }
 
@@ -546,7 +547,7 @@ namespace Desktop
                     return;
                 }
 
-                var C = A.Multiply(B);
+                var C = MatrixOperations.Multiply(A, B);
                 ResultText.Text = "A × B:\n" + C.ToFormattedString();
             }
             catch (Exception ex)
@@ -562,7 +563,7 @@ namespace Desktop
             var grid = tag == "A" ? MatrixGridA : MatrixGridB;
             var matrix = ReadMatrixFromGrid(grid);
 
-            var result = matrix.Transpose();
+            var result = MatrixOperations.Transpose(matrix);
             ResultText.Text = $"Transpose ({tag}):\n" + result.ToFormattedString();
         }
 
@@ -587,7 +588,7 @@ namespace Desktop
         private void OnDetClick(object sender, RoutedEventArgs e)
         {
             var matrix = ReadMatrixFromGrid(GetMatrixGridFromTag(sender));
-            ResultText.Text = $"det ≈ {matrix.Determinant():F6}";
+            ResultText.Text = $"det ≈ {MatrixOperations.Determinant(matrix):F6}";
         }
 
         private void OnInverseClick(object sender, RoutedEventArgs e)
@@ -599,7 +600,7 @@ namespace Desktop
 
             try
             {
-                var result = matrix.Inverse();
+                var result = MatrixOperations.Inverse(matrix);
                 ResultText.Text = $"Inverse ({tag}):\n" + result.ToFormattedString();
             }
             catch (Exception ex)
@@ -625,7 +626,7 @@ namespace Desktop
                 }
 
                 var matrix = ReadMatrixFromGrid(grid);
-                var result = matrix.Power(k);
+                var result = MatrixOperations.Power(matrix, k);
                 ResultText.Text = $"{tag}^{k} =\n" + result.ToFormattedString();
             }
             catch (Exception ex)
@@ -703,5 +704,37 @@ namespace Desktop
         {
 
         }
+
+        private void MethodTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (MethodTree.SelectedItem is TreeViewItem selected)
+            {
+                var tag = selected.Tag?.ToString();
+
+                MatrixPanel.Visibility = (tag == "matrix") ? Visibility.Visible : Visibility.Collapsed;
+                SortingPanel.Visibility = (tag == "sorting") ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                MatrixPanel.Visibility = Visibility.Collapsed;
+                SortingPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void OnGenerateArrayClick(object sender, RoutedEventArgs e)
+        {
+            ResultText.Clear();
+            Random rnd = new Random();
+            int[] array = Enumerable.Range(1, 10).Select(_ => rnd.Next(0, 100)).ToArray();
+            SortInputBox.Text = string.Join(" ", array);
+            ResultText.Text = "Generated array:\n" + SortInputBox.Text;
+        }
+
+        private void OnClearArrayClick(object sender, RoutedEventArgs e)
+        {
+            SortInputBox.Clear();
+            ResultText.Clear();
+        }
+
     }
 }
