@@ -434,6 +434,40 @@ namespace Desktop
                                 break;
                             }
 
+                        case "Bubble Sort":
+                            {
+                                try
+                                {
+                                    int[] array = SortInputBox.Text
+                                        .Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                                        .Select(int.Parse)
+                                        .ToArray();
+
+                                    var bubbleSort = new BubbleSort();
+                                    var result = bubbleSort.Sort(array, logSteps: true, direction: SortDirection.Ascending);
+
+                                    var output = new StringBuilder();
+                                    output.AppendLine($"Sorted Array: [{string.Join(", ", result.SortedArray)}]");
+                                    output.AppendLine($"Comparisons: {result.ComparisonCount}");
+                                    output.AppendLine($"Swaps: {result.SwapCount}");
+                                    output.AppendLine($"Time: {result.Duration.TotalMilliseconds:F2} ms");
+
+                                    if (result.Steps.Any())
+                                    {
+                                        output.AppendLine("\nSteps:");
+                                        foreach (var step in result.Steps)
+                                            output.AppendLine("‣ " + step);
+                                    }
+
+                                    ResultText.Text = output.ToString();
+                                }
+                                catch
+                                {
+                                    ResultText.Text = "Invalid input. Please enter integers separated by space.";
+                                }
+                                break;
+                            }
+
                         default:
                             ResultText.Text = $"Method \"{method}\" not implemented.";
                             break;
