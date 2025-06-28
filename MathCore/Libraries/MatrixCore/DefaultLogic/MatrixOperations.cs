@@ -8,7 +8,7 @@ using MathCore.Mappers;
 using MathCore.Models;
 using MathCore.Extentions;
 
-namespace MathCore.Libraries.MatrixCore
+namespace MathCore.Libraries.MatrixCore.DefaultLogic
 {
     public static class MatrixOperations
     {

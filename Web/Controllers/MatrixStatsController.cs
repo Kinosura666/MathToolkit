@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MathCore.Interfaces;
 using Web.Models;
-using MathCore.Libraries.MatrixCore;
+using MathCore.Libraries.MatrixCore.DefaultLogic;
 
 namespace Web.Controllers
 {

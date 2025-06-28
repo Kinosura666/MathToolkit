@@ -1,5 +1,5 @@
 ﻿using MathCore.Interfaces;
-using MathCore.Libraries.MatrixCore;
+using MathCore.Libraries.MatrixCore.DefaultLogic;
 using MathCore.Models.MatrixResults;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;

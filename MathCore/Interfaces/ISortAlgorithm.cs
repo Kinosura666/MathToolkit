@@ -9,8 +9,8 @@ using MathCore.Models.SortResults;
 
 namespace MathCore.Interfaces
 {
-    public interface ISortAlgorithm
+    public interface ISortAlgorithm<T> where T : IComparable<T>
     {
-        SortResult Sort(int[] input, bool logSteps = false, SortDirection direction = SortDirection.Ascending);
+        SortResult<T> Sort(T[] input, bool logSteps = false, SortDirection direction = SortDirection.Ascending);
     }
 }

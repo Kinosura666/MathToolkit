@@ -9,7 +9,7 @@ using MathCore.Models;
 using MathCore.Extentions;
 using MathCore.Models.MatrixResults;
 
-namespace MathCore.Libraries.MatrixCore
+namespace MathCore.Libraries.MatrixCore.DefaultLogic
 {
     public class MatrixPolynomial
     {

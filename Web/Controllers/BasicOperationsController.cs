@@ -3,7 +3,7 @@ using Web.Models;
 using MathCore.Models;
 using MathCore.Mappers;
 using MathCore.Interfaces;
-using MathCore.Libraries.MatrixCore;
+using MathCore.Libraries.MatrixCore.DefaultLogic;
 
 namespace Web.Controllers
 {

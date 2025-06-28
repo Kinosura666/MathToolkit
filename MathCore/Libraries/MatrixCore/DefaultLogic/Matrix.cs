@@ -6,7 +6,7 @@ using MathCore.Models.MatrixResults;
 using MathCore.Mappers;
 using MathCore.Models;
 
-namespace MathCore.Libraries.MatrixCore
+namespace MathCore.Libraries.MatrixCore.DefaultLogic
 {
     public class Matrix
     {

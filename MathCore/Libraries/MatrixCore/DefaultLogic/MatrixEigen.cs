@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathCore.Extentions;
 
-namespace MathCore.Libraries.MatrixCore
+namespace MathCore.Libraries.MatrixCore.DefaultLogic
 {
     public static class MatrixEigen
     {

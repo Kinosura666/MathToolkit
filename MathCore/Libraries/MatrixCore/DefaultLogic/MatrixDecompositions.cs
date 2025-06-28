@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathCore.Libraries.MatrixCore
+namespace MathCore.Libraries.MatrixCore.DefaultLogic
 {
     public static class MatrixDecompositions
     {
