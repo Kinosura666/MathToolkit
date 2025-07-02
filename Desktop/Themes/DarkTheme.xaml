@@ -9,6 +9,16 @@
     <Color x:Key="ForegroundColor">#FFFFFFFF</Color>
     <Color x:Key="BorderColor">#FF666666</Color>
 
+    <Color x:Key="ButtonBackgroundColor">#FF333333</Color>
+    <Color x:Key="ButtonPressedColor">#FF555555</Color>
+    <Color x:Key="ButtonHoverForegroundColor">White</Color>
+    <Color x:Key="ButtonHoverColor">#FF444444</Color>
+    <SolidColorBrush x:Key="ButtonHoverBrush" Color="{StaticResource ButtonHoverColor}" />
+
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackgroundColor}" />
+    <SolidColorBrush x:Key="ButtonPressedBrush" Color="{StaticResource ButtonPressedColor}" />
+    <SolidColorBrush x:Key="ButtonHoverForeground" Color="{StaticResource ButtonHoverForegroundColor}" />
+
     <SolidColorBrush x:Key="SelectedTreeViewItemBorderBrush" Color="White"/>
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" />
     <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />

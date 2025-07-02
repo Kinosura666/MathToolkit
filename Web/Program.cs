@@ -1,6 +1,8 @@
+using MathCore.Interfaces;
+using MathCore.Mappers;
 using Web.Interfaces;
-using Web.Mappers;
 using Web.Middleware;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IMatrixMapper, MatrixMapper>();
+builder.Services.AddScoped<ISortFactory, SortFactory>();
+builder.Services.AddScoped<ISortService, SortService>();
 
 
 var app = builder.Build();

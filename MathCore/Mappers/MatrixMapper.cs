@@ -1,11 +1,12 @@
-﻿using Web.Interfaces;
+﻿using MathCore.Interfaces;
+using MathCore.Libraries;
 using MathCore.Models;
 
-namespace Web.Mappers
+namespace MathCore.Mappers
 {
     public class MatrixMapper : IMatrixMapper
     {
-        public Matrix FromJagged(double[][] data)
+        public MatrixModel FromJagged(double[][] data)
         {
             int rows = data.Length;
             int cols = data[0].Length;
@@ -21,11 +22,10 @@ namespace Web.Mappers
                     result[i, j] = data[i][j];
             }
 
-            return new Matrix(result);
+            return new MatrixModel(result);
         }
 
-
-        public double[][] ToJagged(Matrix matrix)
+        public double[][] ToJagged(MatrixModel matrix)
         {
             int rows = matrix.Rows;
             int cols = matrix.Columns;
@@ -41,6 +41,5 @@ namespace Web.Mappers
 
             return jagged;
         }
-
     }
 }

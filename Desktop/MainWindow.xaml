@@ -1,18 +1,22 @@
 ﻿<metro:MetroWindow x:Class="Desktop.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Math Toolkit"
-        ResizeMode="CanResize"
-        Width="1000" Height="600"
-        WindowStartupLocation="CenterScreen"
-        GlowBrush="{DynamicResource BorderBrush}"
-        BorderThickness="1"
-        ShowTitleBar="False"
-        ShowCloseButton="False"
-        ShowMinButton="False"
-        ShowMaxRestoreButton="False">
-
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:Desktop"
+                   xmlns:vm="clr-namespace:Desktop.ViewModels"
+                   mc:Ignorable="d"
+                   Title="Math Toolkit"
+                   ResizeMode="CanResize"
+                   Width="1000" Height="600"
+                   WindowStartupLocation="CenterScreen"
+                   GlowBrush="{DynamicResource BorderBrush}"
+                   BorderThickness="1"
+                   ShowTitleBar="False"
+                   ShowCloseButton="False"
+                   ShowMinButton="False"
+                   ShowMaxRestoreButton="False">
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type DataGrid}">
@@ -74,44 +78,59 @@
                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
                     <TextBlock Text="Methods" FontWeight="Bold" Margin="0,0,0,10" FontSize="16" Foreground="{DynamicResource ForegroundBrush}"/>
 
-                    <TreeView x:Name="MethodTree" Height="400" Loaded="MethodTree_Loaded" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
-                        <TreeViewItem Header="Matrix" Tag="section">
+                    <TreeView x:Name="MethodTree" 
+                              SelectedItemChanged="MethodTree_SelectedItemChanged" 
+                              Height="400" 
+                              Loaded="MethodTree_Loaded" 
+                              Background="{DynamicResource BackgroundBrush}" 
+                              Foreground="{DynamicResource ForegroundBrush}">
+                        <TreeViewItem Header="Matrix" Tag="root">
                             <TreeViewItem Header="─ Spectral Methods ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="Power Iteration"/>
-                            <TreeViewItem Header="Inverse Iteration"/>
-                            <TreeViewItem Header="Rayleigh Quotient Iteration"/>
-                            <TreeViewItem Header="Jacobi Method"/>
-                            <TreeViewItem Header="QR Method"/>
-                            <TreeViewItem Header="LR Method"/>
+                            <TreeViewItem Header="Power Iteration" Tag="matrix"/>
+                            <TreeViewItem Header="Inverse Iteration" Tag="matrix"/>
+                            <TreeViewItem Header="Rayleigh Quotient Iteration" Tag="matrix"/>
+                            <TreeViewItem Header="Jacobi Method" Tag="matrix"/>
+                            <TreeViewItem Header="QR Method" Tag="matrix"/>
+                            <TreeViewItem Header="LR Method" Tag="matrix"/>
                             <TreeViewItem Header="─ Polynomial Methods ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="Leverrier-Faddeev"/>
-                            <TreeViewItem Header="Krylov Method"/>
+                            <TreeViewItem Header="Leverrier-Faddeev" Tag="matrix"/>
+                            <TreeViewItem Header="Krylov Method" Tag="matrix"/>
                             <TreeViewItem Header="─ Decompositions ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="LU Decomposition"/>
-                            <TreeViewItem Header="QR Decomposition"/>
-                            <TreeViewItem Header="Cholesky Decomposition"/>
-                            <TreeViewItem Header="SVD Decomposition"/>
+                            <TreeViewItem Header="LU Decomposition" Tag="matrix"/>
+                            <TreeViewItem Header="QR Decomposition" Tag="matrix"/>
+                            <TreeViewItem Header="Cholesky Decomposition" Tag="matrix"/>
+                            <TreeViewItem Header="SVD Decomposition" Tag="matrix"/>
                             <TreeViewItem Header="─ Matrix Analysis ─" Tag="section" FontWeight="Bold" IsHitTestVisible="False"/>
-                            <TreeViewItem Header="Matrix Norms"/>
-                            <TreeViewItem Header="Condition Number"/>
-                            <TreeViewItem Header="Singular Values"/>
-                            <TreeViewItem Header="Gershgorin Discs"/>
-                            <TreeViewItem Header="Pseudo-Inverse"/>
-                            <TreeViewItem Header="Determinant"/>
-                            <TreeViewItem Header="Inverse Matrix"/>
-                            <TreeViewItem Header="Transpose Matrix"/>
-                            <TreeViewItem Header="Symmetrize Matrix"/>
-                            <TreeViewItem Header="Matrix Rank"/>
+                            <TreeViewItem Header="Matrix Norms" Tag="matrix"/>
+                            <TreeViewItem Header="Condition Number" Tag="matrix"/>
+                            <TreeViewItem Header="Singular Values" Tag="matrix"/>
+                            <TreeViewItem Header="Gershgorin Discs" Tag="matrix"/>
+                            <TreeViewItem Header="Pseudo-Inverse" Tag="matrix"/>
+                            <TreeViewItem Header="Determinant" Tag="matrix"/>
+                            <TreeViewItem Header="Inverse Matrix" Tag="matrix"/>
+                            <TreeViewItem Header="Transpose Matrix" Tag="matrix"/>
+                            <TreeViewItem Header="Symmetrize Matrix" Tag="matrix"/>
+                            <TreeViewItem Header="Matrix Rank" Tag="matrix"/>
                         </TreeViewItem>
-                        <TreeViewItem Header="Linear Systems" Tag="section" >
+                        <TreeViewItem Header="Linear Systems" Tag="root" >
                             <TreeViewItem Header="Gaussian Elimination"/>
                             <TreeViewItem Header="LU Decomposition"/>
                             <TreeViewItem Header="Jacobi Solver"/>
                             <TreeViewItem Header="Gauss-Seidel"/>
                         </TreeViewItem>
-                        <TreeViewItem Header="Sorting" Tag="section">
-                            <TreeViewItem Header="Bubble Sort"/>
-                            <TreeViewItem Header="Quick Sort"/>
+                        <TreeViewItem Header="Sorting" Tag="root">
+                            <TreeViewItem Header="Bubble Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Insertion Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Quick Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Selection Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Counting Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Shell Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Merge Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Heap Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Smooth Sort" Tag="sorting"/>
+                            <TreeViewItem Header="LSD Radix Sort" Tag="sorting"/>
+                            <TreeViewItem Header="MSD Radix Sort" Tag="sorting"/>
+                            <TreeViewItem Header="Bucket Sort" Tag="sorting"/>
                         </TreeViewItem>
                     </TreeView>
 
@@ -139,117 +158,237 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Vertical" Background="{DynamicResource BackgroundBrush}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <!-- Matrix workspace-->
+                    <StackPanel x:Name="MatrixPanel" Visibility="Collapsed"
+                                DataContext="{Binding MatrixViewModel}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <!-- A -->
-                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                            <TextBlock Text="Matrix A:" FontWeight="Bold"/>
-                            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
-                                <DataGrid x:Name="MatrixGridA"
-                                    AutoGenerateColumns="True"
-                                    HeadersVisibility="Column" 
-                                    CanUserAddRows="False"
-                                    CanUserDeleteRows="False"
-                                    SelectionUnit="Cell"
-                                    SelectionMode="Single"
-                                    Margin="0,5,0,5"
-                                    HorizontalAlignment="Center"
-                                    GridLinesVisibility="All"
-                                    EnableRowVirtualization="True"
+                            <!-- A -->
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                <TextBlock Text="Matrix A:" FontWeight="Bold"/>
+                                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
+                                    <DataGrid x:Name="MatrixGridA"
+                                        AutoGenerateColumns="True"
+                                        HeadersVisibility="Column" 
+                                        CanUserAddRows="False"
+                                        CanUserDeleteRows="False"
+                                        SelectionUnit="Cell"
+                                        SelectionMode="Single"
+                                        Margin="0,5,0,5"
+                                        HorizontalAlignment="Center"
+                                        GridLinesVisibility="All"
+                                        EnableRowVirtualization="True"
+                                        Background="{DynamicResource BackgroundBrush}"
+                                        Foreground="{DynamicResource ForegroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        RowBackground="{DynamicResource BackgroundBrush}"
+                                        AlternatingRowBackground="{DynamicResource BackgroundBrush}"
+                                        IsReadOnly="False"
+                                        CanUserResizeColumns="False"
+                                        CanUserResizeRows="False"
+                                        RowHeaderWidth="0" />
+                                </Border>
 
-                                    Background="{DynamicResource BackgroundBrush}"
-                                    Foreground="{DynamicResource ForegroundBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    RowBackground="{DynamicResource BackgroundBrush}"
-                                    AlternatingRowBackground="{DynamicResource BackgroundBrush}"
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="+" Tag="+A" Width="40" Margin="0,3,5,0"
+                                        Command="{Binding ResizeMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="–" Tag="-A" Width="40" Margin="0,3,5,0"
+                                        Command="{Binding ResizeMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="T" Tag="A" 
+                                        Width="40" Margin="0,3,5,0"
+                                        Command="{Binding TransposeMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="det" Tag="A" Width="50" Margin="0,3,5,0"
+                                        Command="{Binding DeterminantMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="inv" Tag="A" Width="50" Margin="0,3,5,0"
+                                        Command="{Binding InverseMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="clear" Tag="A" Width="60" Margin="0,3,5,0"
+                                        Command="{Binding ClearMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                </StackPanel>
 
-                                    IsReadOnly="False"
-                                    CanUserResizeColumns="False"
-                                    CanUserResizeRows="False"
-                                    RowHeaderWidth="0" />
-                            </Border>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="+" Tag="+A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
-                            <Button Content="–" Tag="-A" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
-                            <Button Content="T" Tag="A" Click="OnTransposeClick" Width="40" Margin="0,0,5,0"/>
-                            <Button Content="det" Tag="A" Click="OnDetClick" Width="50" Margin="0,0,5,0"/>
-                            <Button Content="inv" Tag="A" Click="OnInverseClick" Width="50" Margin="0,0,5,0"/>
-                            <Button Content="сlear" Tag="A" Click="OnClearClick" Width="60"/>
+                                <Grid Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="To the power of ->" Tag="A"
+                                        Command="{Binding PowerMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <TextBox x:Name="PowerBoxA" Grid.Column="1" Text="2" Margin="5,0,0,0"
+                                        TextAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- Buttons -->
+                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
+                                <Button Content="A + B" Margin="0,5"
+                                        Command="{Binding AddMatricesCommand}"/>
+                                <Button Content="A - B" Margin="0,5"
+                                        Command="{Binding SubtractMatricesCommand}" />
+                                <Button Content="A × B" Margin="0,5"
+                                        Command="{Binding MultiplyMatricesCommand}"/>
+                            </StackPanel>
+
+                            <!-- B -->
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                <TextBlock Text="Matrix B:" FontWeight="Bold"/>
+                                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
+                                    <DataGrid x:Name="MatrixGridB"
+                                        AutoGenerateColumns="True"
+                                        HeadersVisibility="Column" 
+                                        CanUserAddRows="False"
+                                        CanUserDeleteRows="False"
+                                        SelectionUnit="Cell"
+                                        SelectionMode="Single"
+                                        Margin="0,5,0,5"
+                                        HorizontalAlignment="Center"
+                                        GridLinesVisibility="All"
+                                        EnableRowVirtualization="True"
+
+                                        Background="{DynamicResource BackgroundBrush}"
+                                        Foreground="{DynamicResource ForegroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        RowBackground="{DynamicResource BackgroundBrush}"
+                                        AlternatingRowBackground="{DynamicResource BackgroundBrush}"
+
+                                        IsReadOnly="False"
+                                        CanUserResizeColumns="False"
+                                        CanUserResizeRows="False"
+                                        RowHeaderWidth="0" />
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="+" Tag="+B" Width="40" Margin="0,3,5,0"
+                                        Command="{Binding ResizeMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="–" Tag="-B" Width="40" Margin="0,3,5,0"
+                                        Command="{Binding ResizeMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="T" Tag="B" 
+                                        Width="40" Margin="0,3,5,0"
+                                        Command="{Binding TransposeMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="det" Tag="B" Width="50" Margin="0,3,5,0"
+                                        Command="{Binding DeterminantMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="inv" Tag="B" Width="50" Margin="0,3,5,0"
+                                        Command="{Binding InverseMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <Button Content="clear" Tag="B" Width="60" Margin="0,3,5,0"
+                                        Command="{Binding ClearMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                </StackPanel>
+                                <Grid Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="To the power of ->" Tag="B"
+                                        Command="{Binding PowerMatrixCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+                                    <TextBox x:Name="PowerBoxB" Grid.Column="1" Text="2" Margin="5,0,0,0"
+                                        TextAlignment="Center"/>
+                                </Grid>
+
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Sorting workspace-->
+                    <StackPanel x:Name="SortingPanel"
+                        Visibility="Collapsed"
+                        Margin="0"
+                        Background="{DynamicResource BackgroundBrush}"
+                        DataContext="{Binding SortViewModel}">
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Array to sort:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding SortInput, UpdateSourceTrigger=PropertyChanged}"
+                                Height="50"
+                                Margin="0,0,0,10"
+                                Background="{DynamicResource BackgroundBrush}"
+                                Foreground="{DynamicResource ForegroundBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" />
+
+                            <!-- Generate + Size -->
+                            <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Left" 
+                                Margin="0,0,0,10">
+                                <Button Style="{StaticResource SortingButtons}" 
+                                    Content="Generate Full Random"
+                                    Command="{Binding GenerateCommand}"
+                                    Width="180" Margin="0,0,5,0"/>
+                                <TextBlock Text="Size:" 
+                                    VerticalAlignment="Center" 
+                                    Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding SortSize, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center"
+                                    Width="60"/>
+                            </StackPanel>
+
+                            <!-- Generate Partially Sorted -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                                <Button Style="{StaticResource SortingButtons}"
+                                    Content="Generate Partially Sorted" 
+                                    Command="{Binding GeneratePartiallySortedCommand}" 
+                                    Width="180"
+                                    Margin="0,0,5,0"/>
+                                <TextBlock Text="Size:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding PartiallySortedSize, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center" Margin="0,0,5,0" Width="60"/>
+                                <TextBlock Text="Sorted %" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding SortedPercent, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center" Width="60"/>
+                            </StackPanel>
+
+                            <!-- Generate With Duplicates -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                                <Button Style="{StaticResource SortingButtons}"  
+                                    Content="Generate With Duplicates" 
+                                    Command="{Binding GenerateWithDuplicatesCommand}"
+                                    Width="180"
+                                    Margin="0,0,5,0"/>
+                                <TextBlock Text="Size:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding DuplicateArraySize, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center" Margin="0,0,5,0" Width="60"/>
+                                <TextBlock Text="Dup. %" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding DuplicatePercent, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="60" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Checkbox and value range -->
+                            <CheckBox Content="Use decimal (double)"
+                                IsChecked="{Binding UseDouble}" 
+                                Margin="0,0,0,10"/>
+                            
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Min:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding MinValue, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,0,10,0"/>
+
+                                <TextBlock Text="Max:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBox Text="{Binding MaxValue, UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                            </StackPanel>
+
+                            <!-- Clear -->
+                            <Button Style="{StaticResource SortingButtons}"
+                                Content="Clear" Width="100"
+                                Command="{Binding ClearSortCommand}"
+                                HorizontalAlignment="Left"/>
                         </StackPanel>
-                            <Grid Margin="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="50" />
-                                </Grid.ColumnDefinitions>
-                                <Button Content="To the power of ->" Tag ="A" Click="OnPowerClick" />
-                                <TextBox x:Name="PowerBoxA" Grid.Column="1" Text="2" Margin="5,0,0,0"
-                                         TextAlignment="Center"/>
-                            </Grid>
-                        </StackPanel>
-
-                        <!-- Buttons -->
-                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
-                            <Button Content="A + B" Click="OnAddMatricesClick" Margin="0,5"/>
-                            <Button Content="A - B" Click="OnSubtractMatricesClick" Margin="0,5"/>
-                            <Button Content="A × B" Click="OnMultiplyMatricesClick" Margin="0,5"/>
-                        </StackPanel>
-
-                        <!-- B -->
-                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                            <TextBlock Text="Matrix B:" FontWeight="Bold"/>
-                            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="2">
-                                <DataGrid x:Name="MatrixGridB"
-                                    AutoGenerateColumns="True"
-                                    HeadersVisibility="Column" 
-                                    CanUserAddRows="False"
-                                    CanUserDeleteRows="False"
-                                    SelectionUnit="Cell"
-                                    SelectionMode="Single"
-                                    Margin="0,5,0,5"
-                                    HorizontalAlignment="Center"
-                                    GridLinesVisibility="All"
-                                    EnableRowVirtualization="True"
-
-                                    Background="{DynamicResource BackgroundBrush}"
-                                    Foreground="{DynamicResource ForegroundBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    RowBackground="{DynamicResource BackgroundBrush}"
-                                    AlternatingRowBackground="{DynamicResource BackgroundBrush}"
-
-                                    IsReadOnly="False"
-                                    CanUserResizeColumns="False"
-                                    CanUserResizeRows="False"
-                                    RowHeaderWidth="0" />
-                            </Border>
-                            <StackPanel Orientation="Horizontal">
-                            <Button Content="+" Tag="+B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
-                            <Button Content="–" Tag="-B" Click="OnResizeClick" Width="40" Margin="0,0,5,0"/>
-                            <Button Content="T" Tag="B" Click="OnTransposeClick" Width="40" Margin="0,0,5,0"/>
-                            <Button Content="det" Tag="B" Click="OnDetClick" Width="50" Margin="0,0,5,0"/>
-                            <Button Content="inv" Tag="B" Click="OnInverseClick" Width="50" Margin="0,0,5,0"/>
-                            <Button Content="сlear" Tag="B" Click="OnClearClick" Width="60"/>
-                        </StackPanel>
-                            <Grid Margin="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="50" />
-                                </Grid.ColumnDefinitions>
-                                <Button Content="To the power of ->" Tag ="B" Click="OnPowerClick" />
-                                <TextBox x:Name="PowerBoxB" Grid.Column="1" Text="2" Margin="5,0,0,0"
-                                         TextAlignment="Center"/>
-                            </Grid>
-
-                        </StackPanel>
-                    </Grid>
+                    </StackPanel>
 
                     <!-- Result -->
                     <TextBlock Text="Result:" FontWeight="Bold" Margin="0,15,0,5"/>
-                    <TextBox x:Name="ResultText"
+                    <TextBox Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Height="160"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto"
@@ -258,6 +397,7 @@
                         BorderBrush="{DynamicResource BorderBrush}" />
 
                 </StackPanel>
+
             </Grid>
         </Grid>
     </Border>

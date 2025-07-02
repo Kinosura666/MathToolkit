@@ -1,29 +1,28 @@
-﻿using MathCore.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
-using System.Runtime.CompilerServices;
 using System.Data;
+using MathCore.Models;
 
 namespace MathCore.Extentions
 {
     public static class MatrixExtensions
     {
-        public static Matrix<double> ToMathNet(this Models.Matrix matrix)
+        public static Matrix<double> ToMathNet(this MatrixModel matrix)
         {
             return DenseMatrix.OfArray(matrix.Data);
         }
 
-        public static Models.Matrix ToCore(this Matrix<double> matrix)
+        public static MatrixModel ToCore(this Matrix<double> matrix)
         {
-            return new Models.Matrix(matrix.ToArray());
+            return new MatrixModel(matrix.ToArray());
         }
 
-        public static DataTable ToDataTable(this MathCore.Models.Matrix matrix)
+        public static DataTable ToDataTable(this MatrixModel matrix)
         {
             var table = new DataTable();
             for (int j = 0; j < matrix.Columns; j++)
@@ -40,7 +39,7 @@ namespace MathCore.Extentions
             return table;
         }
 
-        public static string ToFormattedString(this MathCore.Models.Matrix matrix)
+        public static string ToFormattedString(this MatrixModel matrix)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < matrix.Rows; i++)
@@ -52,5 +51,20 @@ namespace MathCore.Extentions
             return sb.ToString();
         }
 
+        public static double[][] ToJagged(double[,] raw)
+        {
+            int rows = raw.GetLength(0);
+            int cols = raw.GetLength(1);
+            var jagged = new double[rows][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                jagged[i] = new double[cols];
+                for (int j = 0; j < cols; j++)
+                    jagged[i][j] = raw[i, j];
+            }
+
+            return jagged;
+        }
     }
 }

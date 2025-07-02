@@ -1,5 +1,5 @@
 ﻿using MathCore.Extentions;
-using MathCore.Models;
+using MathCore.Libraries;
 
 namespace Runners
 {
