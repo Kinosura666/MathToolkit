@@ -4,9 +4,9 @@ using MathCore.Models.MatrixResults;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
-namespace Web.Controllers
+namespace Web.Controllers.MatrixControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/matrix/[controller]")]
     public class DecompositionsController : ControllerBase
     {
         private readonly IMatrixMapper _mapper;

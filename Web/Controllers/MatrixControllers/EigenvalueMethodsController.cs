@@ -4,9 +4,9 @@ using MathCore.Interfaces;
 using Web.Models;
 using MathCore.Libraries.MatrixCore.DefaultLogic;
 
-namespace Web.Controllers
+namespace Web.Controllers.MatrixControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/matrix/[controller]")]
     public class EigenvalueMethodsController : ControllerBase
     {
         private readonly ILogger<EigenvalueMethodsController> _logger;
@@ -26,7 +26,7 @@ namespace Web.Controllers
          */
 
         [HttpPost("PowerIteration")]
-        public ActionResult<EigenIterationResult> PowerIteration([FromBody]SingleMatrixDto dto)
+        public ActionResult<EigenIterationResult> PowerIteration([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
             var result = MatrixEigen.PowerIteration(matrix);
@@ -44,7 +44,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("RayleighQuotientIteration")]
-        public ActionResult<EigenIterationResult> RayleighQuotientIteration([FromBody]SingleMatrixDto dto)
+        public ActionResult<EigenIterationResult> RayleighQuotientIteration([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
             var result = MatrixEigen.RayleighQuotientIteration(matrix);
@@ -62,7 +62,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("JacobiEigenSolver")]
-        public ActionResult<JacobiEigenResult> JacobiEigenSolver([FromBody]SingleMatrixDto dto)
+        public ActionResult<JacobiEigenResult> JacobiEigenSolver([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
             var result = MatrixEigen.JacobiEigenSolver(matrix);
@@ -71,7 +71,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("QREigenValues")]
-        public ActionResult<EigenvalueListResult> QREigenValues([FromBody]SingleMatrixDto dto)
+        public ActionResult<EigenvalueListResult> QREigenValues([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
             var result = MatrixEigen.QREigenValues(matrix);
@@ -89,7 +89,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("LeverrierFaddeev")]
-        public ActionResult<CharacteristicPolynomialResult> LeverrierFaddeev([FromBody]SingleMatrixDto dto)
+        public ActionResult<CharacteristicPolynomialResult> LeverrierFaddeev([FromBody] SingleMatrixDto dto)
         {
             var matrix = _mapper.FromJagged(dto.A);
             var result = MatrixPolynomial.LeverrierFaddeev(matrix);

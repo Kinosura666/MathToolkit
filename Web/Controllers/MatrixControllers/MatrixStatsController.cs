@@ -3,9 +3,9 @@ using MathCore.Interfaces;
 using Web.Models;
 using MathCore.Libraries.MatrixCore.DefaultLogic;
 
-namespace Web.Controllers
+namespace Web.Controllers.MatrixControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/matrix/[controller]")]
     public class MatrixStatsController : ControllerBase
     {
         private readonly IMatrixMapper _mapper;

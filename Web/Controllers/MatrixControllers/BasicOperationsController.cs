@@ -5,9 +5,9 @@ using MathCore.Mappers;
 using MathCore.Interfaces;
 using MathCore.Libraries.MatrixCore.DefaultLogic;
 
-namespace Web.Controllers
+namespace Web.Controllers.MatrixControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/matrix/[controller]")]
     public class BasicOperationsController : ControllerBase
     {
         private readonly IMatrixMapper _mapper;
