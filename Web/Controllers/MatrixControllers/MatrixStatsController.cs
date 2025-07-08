@@ -22,6 +22,18 @@ namespace Web.Controllers.MatrixControllers
           } 
          */
 
+        [HttpPost("Norms")]
+        public ActionResult<object> Norms([FromBody] SingleMatrixDto dto)
+        {
+            var matrix = _mapper.FromJagged(dto.A);
+            return Ok(new
+            {
+                frobenius = MatrixStats.FrobeniusNorm(matrix),
+                oneNorm = MatrixStats.OneNorm(matrix),
+                infNorm = MatrixStats.InfinityNorm(matrix),
+                twoNorm = MatrixStats.TwoNorm(matrix)
+            });
+        }
 
         [HttpPost("FrobeniusNorm")]
         public ActionResult<double> FrobeniusNorm([FromBody] SingleMatrixDto dto)

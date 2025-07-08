@@ -12,16 +12,19 @@ namespace Web.Controllers.SortControllers
     public class SortController : ControllerBase
     {
         private readonly ISortService _service;
+        private readonly ILogger<SortController> _logger;
 
-        public SortController(ISortService service)
+        public SortController(ISortService service, ILogger<SortController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpPost]
         public IActionResult Sort([FromBody] SortRequest request)
         {
-            var result = _service.Sort(request);
+            _logger.LogInformation($"{request.algorithm} sort");
+            var result = _service.Sort(request);     
             return Ok(result);
         }
     }

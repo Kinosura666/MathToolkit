@@ -1,0 +1,95 @@
+* {
+    box-sizing: border-box;
+}
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    display: none; 
+    pointer-events: none; 
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; 
+    appearance: textfield; 
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: auto;
+}
+
+    body::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 3px;
+    }
+
+.matrix-page {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: row;
+}
+
+.matrix-table-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    width: 100%;
+    overflow-x: auto; 
+}
+
+
+.matrix-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2vw;
+    width: 100%;
+    align-items: start;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+    button:hover {
+        background-color: #444;
+        transform: scale(1.03);
+    }

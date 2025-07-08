@@ -32,7 +32,7 @@ namespace Web.Controllers.MatrixControllers
             return Ok(new TwoMatrixResult
             {
                 Matrix1Name = "L",
-                Matrix2Name = "R",
+                Matrix2Name = "U",
                 Matrix1 = _mapper.ToJagged(L),
                 Matrix2 = _mapper.ToJagged(U),
             });

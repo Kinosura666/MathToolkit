@@ -1,0 +1,41 @@
+.matrix-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.matrix-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+    .matrix-button-row button {
+        padding: 6px 10px;
+        font-size: 14px;
+        min-width: 50px;
+    }
+
+.matrix-power-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.matrix-power-input {
+    width: 60px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #111;
+    color: #eee;
+    border: 1px solid #444;
+    text-align: center;
+}
