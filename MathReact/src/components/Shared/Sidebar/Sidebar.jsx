@@ -6,9 +6,10 @@ const methods = {
     'Polynomial Methods': ['Leverrier-Faddeev', 'Krylov Method'],
     'Decompositions': ['LU Decomposition', 'QR Decomposition', 'Cholesky Decomposition', 'SVD Decomposition'],
     'Matrix Analysis': ['Matrix Norms', 'Condition Number', 'Singular Values', 'Gershgorin Discs', 'Pseudo-Inverse', 'Determinant', 'Inverse Matrix', 'Transpose Matrix', 'Symmetrize Matrix', 'Matrix Rank'],
+    'Sorting': ['Bubble Sort', 'Insertion Sort', 'Quick Sort', 'Selection Sort', 'Counting Sort', 'Shell Sort', 'Merge Sort', 'Heap Sort', 'Smooth Sort', 'LSD Radix Sort', 'MSD Radix Sort', 'Bucket Sort',]
 };
 
-const Sidebar = ({ selectedMethod, setSelectedMethod }) => {
+const Sidebar = ({ selectedMethod, setSelectedMethod, onCategoryChange }) => {
     const [expandedSections, setExpandedSections] = useState(() => {
         const initial = {};
         for (const key in methods) initial[key] = true;
@@ -38,7 +39,10 @@ const Sidebar = ({ selectedMethod, setSelectedMethod }) => {
                             {list.map(method => (
                                 <li
                                     key={method}
-                                    onClick={() => setSelectedMethod(method)}
+                                    onClick={() => {
+                                        setSelectedMethod(method);
+                                        onCategoryChange(category);
+                                    }}
                                     className={`sidebar-method ${selectedMethod === method ? 'active' : ''}`}
                                 >
                                     {method}

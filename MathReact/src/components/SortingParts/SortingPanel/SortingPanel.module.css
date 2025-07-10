@@ -1,0 +1,135 @@
+.sortPanel {
+    margin-top: 16px;
+    padding: 16px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    border: 1px solid #444;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+    .sortPanel label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+        color: #ddd;
+    }
+
+    .sortPanel textarea {
+        width: 100%;
+        padding: 8px 12px;
+        font-family: monospace;
+        font-size: 14px;
+        resize: vertical;
+        background-color: #2b2b2b;
+        color: #f0f0f0;
+        border: 1px solid #555;
+        border-radius: 6px;
+    }
+
+.controlRow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.controlGroup {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.input {
+    width: 56px;
+    padding: 4px;
+    background-color: #1a1a1a;
+    border: 1px solid #555;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.sortCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    color: #ccc;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+    .sortCheckbox label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    .sortCheckbox input[type="checkbox"] {
+        appearance: none;
+        width: 40px;
+        height: 20px;
+        background-color: #555;
+        border-radius: 20px;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+        .sortCheckbox input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .sortCheckbox input[type="checkbox"]:checked {
+            background-color: #4caf50;
+        }
+
+            .sortCheckbox input[type="checkbox"]:checked::before {
+                transform: translateX(20px);
+            }
+
+
+.rangeInputs {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #aaa;
+    font-weight: 500;
+    padding: 8px 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.4);
+    width: fit-content;
+}
+
+button {
+    padding: 6px 12px;
+    background-color: #444;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    button:hover {
+        background-color: #666;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+

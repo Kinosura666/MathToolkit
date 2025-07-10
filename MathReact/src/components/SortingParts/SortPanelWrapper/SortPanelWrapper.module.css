@@ -1,0 +1,54 @@
+.sortOutputSection {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #202020;
+    border: 1px solid #333;
+}
+
+.sortedArrayBox,
+.sortStepsBox,
+.sortMetaBox {
+    background-color: #1e1e1e;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+.sortedArrayBox {
+    color: #00e676;
+    border-left: 4px solid #00e676;
+}
+
+.sortStepsBox {
+    color: #64b5f6;
+    border-left: 4px solid #64b5f6;
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #2a2a2a;
+}
+
+    .sortStepsBox::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sortStepsBox::-webkit-scrollbar-thumb {
+        background-color: #666;
+        border-radius: 4px;
+    }
+
+.sortMetaBox {
+    display: flex;
+    gap: 16px;
+    color: #ccc;
+    font-weight: 500;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}

@@ -1,8 +1,8 @@
 import React from 'react';
-import MatrixPage from './pages/MatrixPage';
+import MainPage from './pages/MainPage';
 import './styles/global.css'; 
 const App = () => {
-    return <MatrixPage />;
+    return <MainPage />;
 };
 
 export default App;
