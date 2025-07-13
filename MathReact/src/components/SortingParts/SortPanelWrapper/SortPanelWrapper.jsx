@@ -23,11 +23,17 @@ const SortPanelWrapper = ({ selectedMethod, setGlobalResult, setExecutedMethod }
         }
     };
 
-  
+    const handleArrayTextChange = (text) => {
+        const parts = text.split(',').map(p => p.trim()).filter(Boolean);
+        const parsed = parts.map(Number).filter(n => !isNaN(n));
+        setArrayToSort(parsed);
+    };
 
     return (
         <div className={styles.sortPanelWrapper}>
-            <SortPanel onGenerate={setArrayToSort} />
+            <SortPanel
+                onGenerate={setArrayToSort}
+                onTextChange={handleArrayTextChange}            />
 
             <div className="executor" style={{ marginTop: '12px' }}>
                 <button
@@ -60,11 +66,11 @@ const SortPanelWrapper = ({ selectedMethod, setGlobalResult, setExecutedMethod }
                         <div>
                             <strong>Time:</strong>{' '}
                             {sortResult.duration
-                                ? `${sortResult.duration.milliseconds?.toFixed(2)} ms`
+                                ? `${parseFloat(sortResult.duration.split(':')[2]) * 1000} ms`
                                 : 'N/A'}
                         </div>
-
                     </div>
+
                 </div>
             )}
         </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './SortingPanel.module.css';
 
-const SortPanel = ({ onGenerate }) => {
+const SortPanel = ({ onGenerate, onTextChange }) => {
     const [arrayText, setArrayText] = useState('');
     const [size1, setSize1] = useState(10);
     const [size2, setSize2] = useState(10);
@@ -58,7 +58,11 @@ const SortPanel = ({ onGenerate }) => {
             <textarea
                 className={styles.textarea}
                 value={arrayText}
-                onChange={(e) => setArrayText(e.target.value)}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    setArrayText(value);
+                    onTextChange?.(value);
+                }}
                 rows={2}
             />
 

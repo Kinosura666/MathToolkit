@@ -1,149 +1,138 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using MathCore.Common;
-using MathCore.Extentions;
 using MathCore.Interfaces;
 using MathCore.Models.SortResults;
 
-namespace MathCore.Libraries.SortingCore
-{
-    public class SmoothSort<T> : ISortAlgorithm<T> where T : IComparable<T>
+namespace MathCore.Libraries.SortingCore 
+{ 
+    public sealed class SmoothSort<T> : ISortAlgorithm<T> where T : IComparable<T>
     {
-        private static readonly List<int> LeonardoNumbers = GenerateLeonardoNumbers(64);
-
-        private static List<int> GenerateLeonardoNumbers(int max)
-        {
-            var list = new List<int> { 1, 1 };
-            while (true)
-            {
-                int next = list[^1] + list[^2] + 1;
-                if (next > max) break;
-                list.Add(next);
-            }
-            return list;
-        }
-
         public SortResult<T> Sort(T[] input, bool logSteps = false, SortDirection direction = SortDirection.Ascending)
         {
-            T[] array = (T[])input.Clone();
-            List<string> steps = logSteps ? new List<string>() : null;
-            int comparisons = 0, swaps = 0;
-            var stopwatch = Stopwatch.StartNew();
+            if (input is null) throw new ArgumentNullException(nameof(input));
 
-            int n = array.Length;
-            var heaps = new List<int>(); 
+            var a = (T[])input.Clone();
 
-            for (int i = 0; i < n; i++)
+            List<string>? steps = logSteps ? new() : null;
+            int compares = 0, swaps = 0;
+
+            var started = DateTime.UtcNow;
+            var heapSizes = new List<int>();
+
+            for (int i = 0; i < a.Length; i++)
             {
-                AddHeap(heaps);
-                Sift(array, i, heaps, ref comparisons, ref swaps, direction, steps);
-                Trinkle(array, i, heaps, ref comparisons, ref swaps, direction, steps);
+                heapSizes.Add(1);
+
+                if (heapSizes.Count >= 2 &&
+                    heapSizes[^1] == heapSizes[^2] + 1)
+                {
+                    heapSizes[^2] = heapSizes[^2] + 1;
+                    heapSizes.RemoveAt(heapSizes.Count - 1);
+                }
+
+                Trinkle(a, i, heapSizes, direction, ref compares, ref swaps, steps);
             }
 
-            for (int i = n - 1; i >= 0; i--)
+            for (int i = a.Length - 1; i >= 0; i--)
             {
-                if (heaps.Count == 0) break;
+                int size = heapSizes[^1];
+                heapSizes.RemoveAt(heapSizes.Count - 1);
 
-                int order = heaps[^1];
-                heaps.RemoveAt(heaps.Count - 1);
-
-                if (order >= 2)
+                if (size > 1)
                 {
-                    int right = i - 1;
-                    int left = i - 1 - LeonardoNumbers[order - 2];
-                    heaps.Add(order - 1);
-                    Trinkle(array, left, heaps, ref comparisons, ref swaps, direction, steps);
-                    heaps.Add(order - 2);
-                    Trinkle(array, right, heaps, ref comparisons, ref swaps, direction, steps);
+                    heapSizes.Add(size - 2);
+                    heapSizes.Add(size - 1);
+
+                    Trinkle(a, i - 1, heapSizes, direction, ref compares, ref swaps, steps);
+                    Trinkle(a, i - 1 - Leonardo(size - 2), heapSizes,
+                            direction, ref compares, ref swaps, steps);
                 }
             }
-
-            stopwatch.Stop();
-
-            if (direction == SortDirection.Descending)
-                Array.Reverse(array);
+            if (direction == SortDirection.Ascending)
+                Array.Reverse(a);
 
             return new SortResult<T>
             {
-                SortedArray = array,
-                Steps = steps ?? new List<string>(),
-                ComparisonCount = comparisons,
+                SortedArray = a,
+                Steps = steps ?? new(),
+                ComparisonCount = compares,
                 SwapCount = swaps,
-                Duration = stopwatch.Elapsed
+                Duration = DateTime.UtcNow - started,
+                Pivots = new(), 
+                PivotIndices = new()
             };
         }
 
-        private void AddHeap(List<int> heaps)
+        private static readonly int[] _leos = BuildLeonardoTable(46);
+
+        private static int Leonardo(int k) => _leos[k];
+
+        private static int Compare(T x, T y, SortDirection dir, ref int cmp)
         {
-            int count = heaps.Count;
-            if (count >= 2 &&
-                heaps[count - 1] == heaps[count - 2] + 1)
-            {
-                int newOrder = heaps[count - 1] + 1;
-                heaps.RemoveAt(count - 1);
-                heaps[count - 2] = newOrder;
-            }
-            else if (heaps.Count > 0 && heaps[^1] == 1)
-                heaps.Add(0);
-            else
-                heaps.Add(1);
+            cmp++;
+            return dir == SortDirection.Ascending
+                ? x.CompareTo(y)
+                : y.CompareTo(x);
         }
 
-        private void Sift(T[] array, int end, List<int> heaps, ref int comparisons, ref int swaps,
-                          SortDirection direction, List<string> steps)
+        private static void Swap(T[] a, int i, int j, ref int swp,
+                                 List<string>? steps)
         {
-            int order = heaps[^1];
-            while (order >= 2)
+            (a[i], a[j]) = (a[j], a[i]);
+            swp++;
+            if (steps is not null)
+                steps.Add($"Swapped {i} with {j} → [{string.Join(", ", a)}]");
+        }
+
+        
+        private static void Sift(T[] a, int root, int order,
+                                 SortDirection dir, ref int cmp, ref int swp,
+                                 List<string>? steps)
+        {
+            while (order > 1) 
             {
-                int r = end;
-                int l = end - 1 - LeonardoNumbers[order - 2];
-                int m = end - 1;
+                int rChild = root - 1; 
+                int lChild = root - 1 - Leonardo(order - 2);
+                int larger = Compare(a[lChild], a[rChild], dir, ref cmp) > 0 ? lChild : rChild;
 
-                int max = r;
+                if (Compare(a[root], a[larger], dir, ref cmp) >= 0) break;
 
-                if (SortingExtensions.Compare(array[l], array[max], direction) > 0)
-                    max = l;
-
-                if (SortingExtensions.Compare(array[m], array[max], direction) > 0)
-                    max = m;
-
-                comparisons += 2;
-                if (max == r) break;
-
-                SortingExtensions.Swap(array, r, max);
-                swaps++;
-                if (steps != null)
-                    steps.Add($"Sifted {array[max]} up to index {r} → [{string.Join(", ", array)}]");
-
-                end = max;
-                order = order == 1 ? 0 : order - (max == l ? 1 : 2);
+                Swap(a, root, larger, ref swp, steps);
+                root = larger;
+                order = larger == rChild ? order - 1 : order - 2;
             }
         }
 
-        private void Trinkle(T[] array, int end, List<int> heaps, ref int comparisons, ref int swaps,
-                             SortDirection direction, List<string> steps)
+        private static void Trinkle(T[] a, int index, IList<int> heapSizes,
+                                    SortDirection dir, ref int cmp, ref int swp,
+                                    List<string>? steps)
         {
-            int order = heaps[^1];
-            while (heaps.Count > 1)
+            int cur = index;
+            int hIdx = heapSizes.Count - 1;   
+            int order = heapSizes[hIdx];
+
+            while (hIdx > 0)
             {
-                int h2 = heaps[^2];
-                int parent = end - LeonardoNumbers[order];
+                int parent = cur - Leonardo(order);
+                if (Compare(a[parent], a[cur], dir, ref cmp) >= 0) break;
 
-                if (SortingExtensions.Compare(array[parent], array[end], direction) <= 0)
-                    break;
-
-                SortingExtensions.Swap(array, parent, end);
-                swaps++;
-                if (steps != null)
-                    steps.Add($"Trinkle swapped {array[end]} with parent at {parent} → [{string.Join(", ", array)}]");
-
-                end = parent;
-                order = h2;
-                heaps.RemoveAt(heaps.Count - 1);
+                Swap(a, cur, parent, ref swp, steps);
+                cur = parent;
+                hIdx -= 1;
+                order = heapSizes[hIdx];
             }
 
-            Sift(array, end, heaps, ref comparisons, ref swaps, direction, steps);
+            Sift(a, cur, order, dir, ref cmp, ref swp, steps);
+        }
+
+        private static int[] BuildLeonardoTable(int n)
+        {
+            var arr = new int[n];
+            arr[0] = arr[1] = 1;
+            for (int k = 2; k < n; k++)
+                arr[k] = arr[k - 1] + arr[k - 2] + 1;
+            return arr;
         }
     }
 }
